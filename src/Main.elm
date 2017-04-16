@@ -2,7 +2,6 @@ module Main exposing (..)
 
 import Routing exposing (parseLocation)
 import Messages exposing (Msg(..))
-import Models exposing (Model, initialModel)
 import Navigation exposing (Location)
 import Routing exposing (Route)
 import Html exposing (Html, button, div, h1, header, input, p, span, text)
@@ -44,24 +43,16 @@ main =
 
 
 
--- UPDATE
+-- MODEL
 
 
-update : Msg -> Model -> ( Model, Cmd Msg )
-update msg model =
-  case msg of
-    OnLocationChange location ->
-      let
-        newRoute =
-          parseLocation location
-      in
-        ( { model | route = newRoute }, Cmd.none )
+type alias Model =
+  { route : Routing.Route }
 
-    GoToAboutPage ->
-      ( model, Navigation.newUrl "#about" )
 
-    GoToMainPage ->
-      ( model, Navigation.newUrl "/" )
+initialModel : Routing.Route -> Model
+initialModel route =
+  { route = route }
 
 
 
@@ -126,3 +117,23 @@ page model =
     NotFoundRoute ->
       notFoundView
 
+
+
+-- UPDATE
+
+
+update : Msg -> Model -> ( Model, Cmd Msg )
+update msg model =
+  case msg of
+    OnLocationChange location ->
+      let
+        newRoute =
+          parseLocation location
+      in
+        ( { model | route = newRoute }, Cmd.none )
+
+    GoToAboutPage ->
+      ( model, Navigation.newUrl "#about" )
+
+    GoToMainPage ->
+      ( model, Navigation.newUrl "/" )
