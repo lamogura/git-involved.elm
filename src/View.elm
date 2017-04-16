@@ -1,6 +1,6 @@
 module View exposing (..)
 
-import Html exposing (Html, div, text, button, h1, p)
+import Html exposing (Html, header, div, span, text, button, h1, p)
 import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
 import Messages exposing (Msg(..))
@@ -26,16 +26,27 @@ page model =
     NotFoundRoute ->
       notFoundView
 
-
 mainPage : Html Msg
 mainPage =
-  div [ class "jumbotron" ]
-    [ div [ class "container" ]
-      [ h1 [] [ text "Welcome to Elm Main page" ]
-      , p [] [ text "A delightful language for reliable webapps." ]
-      , button [ onClick GoToAboutPage, class "btn btn-primary btn-lg" ] [ text "Go To About Page" ]
+  div [ class "mdl-layout mdl-js-layout mdl-layout--fixed-header" ]
+    [ header [ class "mdl-layout__header" ]
+      [ div [ class "mdl-layout__header-row" ]
+        [ span [ class "mdl-layout__title" ] [ text "Git-Involved" ] ]
+      ]
+    , div [ class "mdl-layout__content" ]
+      [ p [] [ text "Content" ]
+      , p [] [ text "Goes" ]
+      , p [] [ text "Here" ]
       ]
     ]
+
+--div [ class "jumbotron" ]
+--  [ div [ class "container" ]
+--    [ h1 [] [ text "Welcome to Elm Main page" ]
+--    , p [] [ text "A delightful language for reliable webapps." ]
+--    , button [ onClick GoToAboutPage, class "btn btn-primary btn-lg" ] [ text "Go To About Page" ]
+--    ]
+--  ]
 
 
 aboutPage : Html Msg
