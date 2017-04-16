@@ -1,6 +1,6 @@
 module View exposing (..)
 
-import Html exposing (Html, header, div, span, text, button, h1, p)
+import Html exposing (Html, button, div, h1, header, input, p, span, text)
 import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
 import Messages exposing (Msg(..))
@@ -33,6 +33,8 @@ mainPage =
       [ div [ class "mdl-layout__header-row" ]
         [ span [ class "mdl-layout__title" ] [ text "Git-Involved" ] ]
       ]
+    , div [] [ text "Show me repos using" ]
+    , input [] []
     , div [ class "mdl-layout__content" ]
       [ p [] [ text "Content" ]
       , p [] [ text "Goes" ]
