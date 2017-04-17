@@ -4,6 +4,6 @@ import Navigation exposing (Location)
 
 
 type Msg
-  = OnLocationChange Location
-  | GoToAboutPage
-  | GoToMainPage
+    = OnLocationChange Location
+    | GoToAboutPage
+    | GoToMainPage

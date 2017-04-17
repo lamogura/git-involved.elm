@@ -1,16 +1,21 @@
 module Types exposing (..)
+
 import Array exposing (Array)
 
+
 type alias Issue =
-  { title : String
-  , body : String
-  , commentCount : Int
-  }
+    { title : String
+    , body : String
+    , commentCount : Int
+    }
+
 
 type alias IssueSearchResult =
-  { totalCount : Int,
-    issues : Array Issue
-  }
+    { totalCount : Int
+    , issues : Array Issue
+    }
+
+
 
 -- GITHUB ISSUE SEARCH RESULT JSON
 --
