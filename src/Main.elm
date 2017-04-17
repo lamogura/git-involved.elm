@@ -1,5 +1,6 @@
 module Main exposing (..)
 
+import Array
 import Routing exposing (parseLocation)
 import Messages exposing (Msg(..))
 import Navigation exposing (Location)
@@ -8,6 +9,8 @@ import Html exposing (Html, button, div, h1, header, input, p, span, text)
 import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
 import Routing exposing (Route(..))
+import Types exposing (Issue)
+import DummyData exposing (dummySearchResult)
 
 
 init : Location -> ( Model, Cmd Msg )
@@ -75,10 +78,17 @@ mainPage =
     , div [] [ text "Show me repos using" ]
     , input [] []
     , div [ class "mdl-layout__content" ]
-      [ p [] [ text "Content" ]
-      , p [] [ text "Goes" ]
-      , p [] [ text "Here" ]
+      [ div [ class "git-issues" ]
+        (Array.toList (Array.map issueDiv dummySearchResult.issues))
       ]
+    ]
+
+issueDiv : Issue -> Html Msg
+issueDiv issue =
+  div [ class "git-issue" ]
+    [ div [ class "issue-title" ] [ text ("Title: " ++ issue.title) ]
+    , div [ class "issue-comments" ] [ text ("Comments: " ++ toString issue.commentCount) ]
+    , div [ class "issue-body" ] [ text ("Body: " ++ issue.body) ]
     ]
 
 --div [ class "jumbotron" ]
