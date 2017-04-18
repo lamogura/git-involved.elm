@@ -1,10 +1,12 @@
-module Types exposing (..)
+module IssueSearch.Types exposing (..)
+
+import Array exposing (Array)
+import Types exposing (Issue)
 
 
-type alias Issue =
-    { title : String
-    , body : String
-    , commentCount : Int
+type alias IssueSearchResult =
+    { totalCount : Int
+    , issues : Array Issue
     }
 
 

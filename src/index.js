@@ -1,9 +1,9 @@
-'use strict';
+'use strict'
 
-require('font-awesome/css/font-awesome.css');
-require('./index.html');
+require('font-awesome/css/font-awesome.css')
+require('./index.html')
 
-var Elm = require('./Main.elm');
-var mountNode = document.getElementById('main');
+var Elm = require('./App.elm')
+var mountNode = document.getElementById('app')
 
-var app = Elm.Main.embed(mountNode);
+var app = Elm.App.embed(mountNode)

@@ -1,7 +1,8 @@
 module DummyData exposing (dummySearchResult, dummyIssue)
 
 import Array
-import Types exposing (Issue, IssueSearchResult)
+import Types exposing (Issue)
+import IssueSearch.Types exposing (IssueSearchResult)
 import Json.Decode as Decode
 
 

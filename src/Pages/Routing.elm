@@ -1,19 +1,14 @@
-module Routing exposing (..)
+module Pages.Routing exposing (..)
 
 import Navigation exposing (Location)
 import UrlParser exposing (..)
-
-
-type Route
-    = MainPage
-    | AboutPage
-    | NotFoundRoute
+import Pages.Types exposing (Route(..))
 
 
 matchers : Parser (Route -> a) a
 matchers =
     oneOf
-        [ map MainPage top
+        [ map HomePage top
         , map AboutPage (s "about")
         ]
 
