@@ -6,7 +6,8 @@
   "scripts": {
     "build": "webpack",
     "watch": "webpack --watch",
-    "dev": "webpack-dev-server --port 3000"
+    "dev": "webpack-dev-server --port 3000",
+    "test": "./node_modules/.bin/elm-test tests/RunTestsInTerminal.elm"
   },
   "dependencies": {
     "css-loader": "^0.26.1",
@@ -19,5 +20,8 @@
     "webpack": "^1.14.0",
     "webpack-dev-middleware": "^1.10.0",
     "webpack-dev-server": "^1.16.3"
+  },
+  "devDependencies": {
+    "elm-test": "^0.18.2"
   }
 }
