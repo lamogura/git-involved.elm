@@ -1,12 +1,20 @@
 module GitInvolvedTests exposing (allTests)
 
-import Test exposing (describe, test)
+import Test exposing (Test, describe, test, fuzz, fuzz2)
 import Expect
+import Fuzz exposing (..)
 
 
+add : number -> number -> number
+add x y =
+    x + y
+
+
+allTests : Test
 allTests =
     describe "Addition"
-        [ test "1 + 1 = 2" <|
-            \() ->
-                (1 + 1) |> Expect.equal 2
+        [ fuzz2 int int "given two integer" <|
+            \num1 num2 ->
+                add num1 num2
+                    |> Expect.equal (num1 + num2)
         ]

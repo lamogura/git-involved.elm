@@ -1,8 +1,13 @@
 module RunTestsInBrowser exposing (main)
 
-import Test.Runner.Html exposing (run)
+import Test.Runner.Html exposing (TestProgram, run)
 import GitInvolvedTests exposing (allTests)
+import Test exposing (describe)
 
 
+main : TestProgram
 main =
-    run allTests
+    run <|
+        describe "Test suite"
+            [ allTests
+            ]
