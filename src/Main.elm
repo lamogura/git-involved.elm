@@ -5,8 +5,8 @@ import Routing exposing (parseLocation)
 import Messages exposing (Msg(..))
 import Navigation exposing (Location)
 import Routing exposing (Route)
-import Html exposing (Html, button, div, h1, h4, header, input, p, span, text)
-import Html.Attributes exposing (class)
+import Html exposing (Html, button, div, h1, a, p, span, text)
+import Html.Attributes exposing (class, href, id)
 import Html.Events exposing (onClick)
 import Routing exposing (Route(..))
 import Types exposing (Issue)
@@ -70,34 +70,34 @@ view model =
 
 mainPage : Html Msg
 mainPage =
-    div [ class "mdl-layout mdl-js-layout mdl-layout--fixed-header" ]
-        [ header [ class "mdl-layout__header" ]
-            [ div [ class "mdl-layout__header-row" ]
-                [ span [ class "mdl-layout__title" ] [ text "Git-Involved" ] ]
-            ]
-        , div [] [ text "Show me repos using" ]
-        , input [] []
-        , div [ class "mdl-layout__content" ]
-            [ div [ class "git-issues section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp" ]
-                (Array.toList (Array.map issueDiv dummySearchResult.issues))
+    Html.body [ class "mdl-demo mdl-color-text--grey-700 mdl-base" ]
+        [ div [ class "mdl-layout__container has-scrolling-header" ]
+            [ div [ class "mdl-layout mdl-js-layout mdl-layout--fixed-header has-tabs is-upgraded" ]
+                [ Html.header [ class "mdl-layout__header mdl-layout__header--scroll mdl-color--primary" ]
+                    [ div [ class "mdl-layout--large-screen-only mdl-layout__header-row" ] []
+                    , div [ class "mdl-layout--large-screen-only mdl-layout__header-row" ]
+                        [ Html.h3 [] [ text "Git-Involved" ] ]
+                    , div [ class "mdl-layout--large-screen-only mdl-layout__header-row" ] []
+                    ]
+                , Html.main_ [ class "mdl-layout__content mdl-color--grey-100" ]
+                    [ Html.section [ class "section--center mdl-grid" ]
+                        (Array.toList (Array.map issueDiv dummySearchResult.issues))
+                    ]
+                ]
             ]
         ]
 
 
 issueDiv : Issue -> Html Msg
 issueDiv issue =
-    div [ class "git-issue mdl-card mdl-cell mdl-cell--12-col" ]
+    div [ class "git-issue mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp" ]
         [ div [ class "mdl-card__supporting-text" ]
-            [ h4 [ class "issue-title" ] [ text ("Title: " ++ issue.title) ]
+            [ Html.h4 [ class "issue-title" ] [ text ("Title: " ++ issue.title) ]
             , div [ class "issue-body" ] [ text ("Body: " ++ issue.body) ]
             ]
         , div [ class "mdl-card__actions" ]
             [ div [ class "issue-labels" ] (Array.toList (Array.map labelDiv issue.labels))
             , div [ class "issue-comments" ] [ text ("Comments: " ++ toString issue.commentCount) ]
-            ]
-        , div [ class "issue-something" ]
-            [ div [] []
-            , div [] []
             ]
         ]
 
