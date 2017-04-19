@@ -10,7 +10,7 @@ import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
 import Routing exposing (Route(..))
 import Types exposing (Issue)
-import DummyData exposing (dummySearchResult)
+import DummyData exposing (dummySearchResult, concatLabels)
 
 
 init : Location -> ( Model, Cmd Msg )
@@ -88,6 +88,7 @@ issueDiv : Issue -> Html Msg
 issueDiv issue =
     div [ class "git-issue" ]
         [ div [ class "issue-title" ] [ text ("Title: " ++ issue.title) ]
+        , div [ class "issue-labels" ] [ text ("Labels: " ++ concatLabels issue.labels) ]
         , div [ class "issue-comments" ] [ text ("Comments: " ++ toString issue.commentCount) ]
         , div [ class "issue-body" ] [ text ("Body: " ++ issue.body) ]
         , div [ class "issue-something" ]

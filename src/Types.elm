@@ -7,6 +7,13 @@ type alias Issue =
     { title : String
     , body : String
     , commentCount : Int
+    , labels : Array Label
+    }
+
+
+type alias Label =
+    { name : String
+    , color : String
     }
 
 
