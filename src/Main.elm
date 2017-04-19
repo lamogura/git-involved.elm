@@ -88,7 +88,7 @@ issueDiv : Issue -> Html Msg
 issueDiv issue =
     div [ class "git-issue" ]
         [ div [ class "issue-title" ] [ text ("Title: " ++ issue.title) ]
-        , div [ class "issue-labels" ] [ text ("Labels: " ++ concatLabels issue.labels) ]
+        , div [ class "issue-labels" ] (Array.toList (Array.map labelDiv issue.labels))
         , div [ class "issue-comments" ] [ text ("Comments: " ++ toString issue.commentCount) ]
         , div [ class "issue-body" ] [ text ("Body: " ++ issue.body) ]
         , div [ class "issue-something" ]
@@ -96,6 +96,11 @@ issueDiv issue =
             , div [] []
             ]
         ]
+
+
+labelDiv : Types.Label -> Html Msg
+labelDiv label =
+    span [ class "label mdl-chip", Html.Attributes.style [ ( "backgroundColor", "#" ++ label.color ) ] ] [ span [ class "mdl-chip__text" ] [ text (label.name) ] ]
 
 
 
