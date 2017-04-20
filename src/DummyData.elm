@@ -2,33 +2,31 @@ module DummyData exposing (dummySearchResult, dummyIssue, concatLabels)
 
 import Array
 import Types exposing (Issue, IssueSearchResult, Label)
-import Json.Decode as Decode
+import Json.Decode exposing (Decoder, int, string, array)
+import Json.Decode.Pipeline exposing (decode, required)
 
 
-issueSearchResultDecoder : Decode.Decoder IssueSearchResult
+issueSearchResultDecoder : Decoder IssueSearchResult
 issueSearchResultDecoder =
-    Decode.map2
-        IssueSearchResult
-        (Decode.at [ "total_count" ] Decode.int)
-        (Decode.at [ "items" ] (Decode.array issueDecoder))
+    decode IssueSearchResult
+        |> required "total_count" int
+        |> required "items" (array issueDecoder)
 
 
-issueDecoder : Decode.Decoder Issue
+issueDecoder : Decoder Issue
 issueDecoder =
-    Decode.map4
-        Issue
-        (Decode.at [ "title" ] Decode.string)
-        (Decode.at [ "body" ] Decode.string)
-        (Decode.at [ "comments" ] Decode.int)
-        (Decode.at [ "labels" ] (Decode.array labelDecoder))
+    decode Issue
+        |> required "title" string
+        |> required "body" string
+        |> required "comments" int
+        |> required "labels" (array labelDecoder)
 
 
-labelDecoder : Decode.Decoder Label
+labelDecoder : Decoder Label
 labelDecoder =
-    Decode.map2
-        Label
-        (Decode.at [ "name" ] Decode.string)
-        (Decode.at [ "color" ] Decode.string)
+    decode Label
+        |> required "name" string
+        |> required "color" string
 
 
 concatLabels : Array.Array Label -> String
@@ -40,7 +38,7 @@ concatLabels labels =
 
 dummySearchResult : IssueSearchResult
 dummySearchResult =
-    case (Decode.decodeString issueSearchResultDecoder dummyResult) of
+    case (Json.Decode.decodeString issueSearchResultDecoder dummyResult) of
         Ok fakeParsed ->
             fakeParsed
 
