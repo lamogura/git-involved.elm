@@ -1,6 +1,5 @@
 module Main exposing (..)
 
-import Array
 import Routing exposing (parseLocation)
 import Messages exposing (Msg(..))
 import Navigation exposing (Location)
@@ -81,7 +80,7 @@ mainPage =
                     ]
                 , Html.main_ [ class "mdl-layout__content mdl-color--grey-100" ]
                     [ Html.section [ class "section--center mdl-grid" ]
-                        (Array.toList (Array.map issueDiv dummySearchResult.issues))
+                        (List.map issueDiv dummySearchResult.issues)
                     ]
                 ]
             ]
@@ -96,7 +95,7 @@ issueDiv issue =
             , div [ class "issue-body" ] [ text ("Body: " ++ issue.body) ]
             ]
         , div [ class "mdl-card__actions" ]
-            [ div [ class "issue-labels" ] (Array.toList (Array.map labelDiv issue.labels))
+            [ div [ class "issue-labels" ] (List.map labelDiv issue.labels)
             , div [ class "issue-comments" ] [ text ("Comments: " ++ toString issue.commentCount) ]
             ]
         ]

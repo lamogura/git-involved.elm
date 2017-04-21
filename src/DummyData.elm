@@ -1,8 +1,7 @@
 module DummyData exposing (dummySearchResult, dummyIssue)
 
-import Array
 import Types exposing (Issue, IssueSearchResult, Label)
-import Json.Decode exposing (Decoder, int, string, array)
+import Json.Decode exposing (Decoder, int, string, list)
 import Json.Decode.Pipeline exposing (decode, required)
 
 
@@ -10,7 +9,7 @@ issueSearchResultDecoder : Decoder IssueSearchResult
 issueSearchResultDecoder =
     decode IssueSearchResult
         |> required "total_count" int
-        |> required "items" (array issueDecoder)
+        |> required "items" (list issueDecoder)
 
 
 issueDecoder : Decoder Issue
@@ -19,7 +18,7 @@ issueDecoder =
         |> required "title" string
         |> required "body" string
         |> required "comments" int
-        |> required "labels" (array labelDecoder)
+        |> required "labels" (list labelDecoder)
 
 
 labelDecoder : Decoder Label
@@ -41,12 +40,12 @@ dummySearchResult =
 
 dummyIssue : Issue
 dummyIssue =
-    case (Array.get 3 dummySearchResult.issues) of
+    case (List.head dummySearchResult.issues) of
         Just issue ->
             issue
 
         Nothing ->
-            Issue "" "" 0 (Array.fromList [ Label "" "" ])
+            Issue "" "" 0 [ Label "" "" ]
 
 
 dummyResult : String

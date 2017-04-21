@@ -1,13 +1,11 @@
 module Types exposing (..)
 
-import Array exposing (Array)
-
 
 type alias Issue =
     { title : String
     , body : String
     , commentCount : Int
-    , labels : Array Label
+    , labels : List Label
     }
 
 
@@ -19,7 +17,7 @@ type alias Label =
 
 type alias IssueSearchResult =
     { totalCount : Int
-    , issues : Array Issue
+    , issues : List Issue
     }
 
 
