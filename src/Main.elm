@@ -10,7 +10,7 @@ import Html.Attributes exposing (class, href, id)
 import Html.Events exposing (onClick)
 import Routing exposing (Route(..))
 import Types exposing (Issue)
-import DummyData exposing (dummySearchResult, concatLabels)
+import DummyData exposing (dummySearchResult)
 
 
 init : Location -> ( Model, Cmd Msg )

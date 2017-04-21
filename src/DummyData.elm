@@ -1,4 +1,4 @@
-module DummyData exposing (dummySearchResult, dummyIssue, concatLabels)
+module DummyData exposing (dummySearchResult, dummyIssue)
 
 import Array
 import Types exposing (Issue, IssueSearchResult, Label)
@@ -27,13 +27,6 @@ labelDecoder =
     decode Label
         |> required "name" string
         |> required "color" string
-
-
-concatLabels : Array.Array Label -> String
-concatLabels labels =
-    labels
-        |> Array.map .name
-        |> Array.foldr (++) ""
 
 
 dummySearchResult : IssueSearchResult
