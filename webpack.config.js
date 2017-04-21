@@ -1,52 +1,134 @@
-var path = require('path');
+var path = require('path')
+var webpack = require('webpack')
+var merge = require('webpack-merge')
+var HtmlWebpackPlugin = require('html-webpack-plugin')
+var autoprefixer = require('autoprefixer')
+var ExtractTextPlugin = require('extract-text-webpack-plugin')
+var CleanWebpackPlugin = require('clean-webpack-plugin')
+var CopyWebpackPlugin = require('copy-webpack-plugin')
+var entryPath = path.join(__dirname, 'frontend/static/index.js')
+var outputPath = path.join(__dirname, 'dist')
 
-module.exports = {
-  entry: {
-    app: [
-      './src/index.js'
-    ]
+// determine build env
+var TARGET_ENV = process.env.npm_lifecycle_event === 'build'
+  ? 'production'
+  : 'development'
+
+var outputFilename = TARGET_ENV === 'production'
+  ? '[name]-[hash].js'
+  : '[name].js'
+
+// common webpack config
+var commonConfig = {
+  output: {
+    path: outputPath,
+    filename: `/static/js/${outputFilename}`,
+    // publicPath: '/'
   },
 
-  output: {
-    path: path.resolve(__dirname + '/dist'),
-    filename: '[name].js',
+  resolve: {
+    extensions: ['', '.js', '.elm'],
   },
 
   module: {
+    noParse: /\.elm$/,
     loaders: [
       {
-        test: /\.(css|scss)$/,
-        loaders: [
-          'style-loader',
-          'css-loader',
-        ]
-      },
-      {
-        test:    /\.html$/,
-        exclude: /node_modules/,
-        loader:  'file?name=[name].[ext]',
-      },
-      {
-        test:    /\.elm$/,
-        exclude: [/elm-stuff/, /node_modules/],
-        loader:  'elm-webpack?verbose=true&warn=true',
-      },
-      {
-        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: 'url-loader?limit=10000&mimetype=application/font-woff',
-      },
-      {
-        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        test: /\.(eot|ttf|woff|woff2|svg)$/,
         loader: 'file-loader',
       },
     ],
-
-    noParse: /\.elm$/,
   },
 
-  devServer: {
-    inline: true,
-    stats: { colors: true },
-  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: 'frontend/static/index.html',
+      inject: 'body',
+      filename: 'index.html',
+    }),
+  ],
 
-};
+  postcss: [autoprefixer({ browsers: ['last 2 versions'] })],
+}
+
+// additional webpack settings for local env (when invoked by 'npm start')
+if (TARGET_ENV === 'development') {
+  console.log('Serving locally...')
+
+  module.exports = merge(commonConfig, {
+    entry: ['webpack-dev-server/client?http://localhost:8080', entryPath],
+
+    devServer: {
+      // serve index.html in place of 404 responses
+      historyApiFallback: true,
+      contentBase: './frontend',
+    },
+
+    module: {
+      loaders: [
+        {
+          test: /\.elm$/,
+          exclude: [/elm-stuff/, /node_modules/],
+          loader: 'elm-hot!elm-webpack?verbose=true&warn=true&debug=true',
+        },
+        {
+          test: /\.(css|scss)$/,
+          loaders: ['style-loader', 'css-loader', 'postcss-loader'],
+        },
+      ],
+    },
+  })
+}
+
+// additional webpack settings for prod env (when invoked via 'npm run build')
+if (TARGET_ENV === 'production') {
+  console.log('Building for prod...')
+
+  module.exports = merge(commonConfig, {
+    entry: entryPath,
+
+    module: {
+      loaders: [
+        {
+          test: /\.elm$/,
+          exclude: [/elm-stuff/, /node_modules/],
+          loader: 'elm-webpack',
+        },
+        {
+          test: /\.(css|scss)$/,
+          loader: ExtractTextPlugin.extract('style-loader', [
+            'css-loader',
+            'postcss-loader',
+          ]),
+        },
+      ],
+    },
+
+    plugins: [
+      new CleanWebpackPlugin(['dist']),
+      new CopyWebpackPlugin([
+        {
+          from: 'frontend/static/img/',
+          to: 'static/img/',
+        },
+        {
+          from: 'frontend/static/favicon.ico',
+        },
+      ]),
+
+      new webpack.optimize.OccurenceOrderPlugin(),
+
+      // extract CSS into a separate file
+      new ExtractTextPlugin('static/css/[name]-[hash].css', {
+        allChunks: true,
+      }),
+
+      // minify & mangle JS/CSS
+      new webpack.optimize.UglifyJsPlugin({
+        minimize: true,
+        compressor: { warnings: false },
+        // mangle:  true
+      }),
+    ],
+  })
+}

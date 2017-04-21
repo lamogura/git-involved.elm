@@ -1,27 +1,43 @@
 {
-  "name": "git_involved",
-  "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "build": "webpack",
-    "watch": "webpack --watch",
-    "dev": "webpack-dev-server --port 3000",
-    "test": "./node_modules/.bin/elm-test tests/RunTestsInTerminal.elm"
+  "name": "git-involved.elm",
+  "description": "Github issue filtering for OSS written in Elm",
+  "version": "0.1.0",
+  "license": "MIT",
+  "author": "Justin Kovalchuk",
+  "homepage": "https://github.com/lamogura/git-involved.elm",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lamogura/git-involved.elm"
   },
-  "dependencies": {
-    "css-loader": "^0.26.1",
-    "elm-webpack-loader": "^4.2.0",
-    "file-loader": "^0.10.0",
-    "font-awesome": "^4.7.0",
-    "json-server": "^0.9.5",
-    "style-loader": "^0.13.1",
-    "url-loader": "^0.5.7",
-    "webpack": "^1.14.0",
-    "webpack-dev-middleware": "^1.10.0",
-    "webpack-dev-server": "^1.16.3"
+  "bugs": {
+    "url": "https://github.com/lamogura/git-involved.elm/issues"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --hot --inline",
+    "build": "webpack --progress --display-modules",
+    "postinstall": "elm-package install && npm run build"
   },
   "devDependencies": {
-    "elm-test": "^0.18.2"
+    "autoprefixer": "^6.3.6",
+    "clean-webpack-plugin": "^0.1.16",
+    "copy-webpack-plugin": "^4.0.1",
+    "css-loader": "^0.26.1",
+    "elm": "^0.18.0",
+    "elm-hot-loader": "^0.5.4",
+    "elm-webpack-loader": "^4.1.1",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.9.0",
+    "html-webpack-plugin": "^2.17.0",
+    "postcss-loader": "^1.1.1",
+    "style-loader": "^0.13.1",
+    "url-loader": "^0.5.7",
+    "webpack": "^1.13.1",
+    "webpack-dev-server": "^1.14.1",
+    "webpack-merge": "^2.4.0"
+  },
+  "dependencies": {
+    "express": "^4.15.2",
+    "serve-favicon": "^2.4.2"
   }
 }

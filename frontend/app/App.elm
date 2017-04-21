@@ -1,4 +1,4 @@
-module Main exposing (..)
+module App exposing (..)
 
 import Routing exposing (parseLocation)
 import Messages exposing (Msg(..))
