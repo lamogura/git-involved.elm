@@ -16,9 +16,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --hot --inline",
     "build": "webpack --progress --display-modules",
-    "postinstall": "elm-package install && npm run build"
+    "postinstall": "npm run build"
   },
-  "devDependencies": {
+  "dependencies": {
     "autoprefixer": "^6.3.6",
     "clean-webpack-plugin": "^0.1.16",
     "copy-webpack-plugin": "^4.0.1",
@@ -26,18 +26,16 @@
     "elm": "^0.18.0",
     "elm-hot-loader": "^0.5.4",
     "elm-webpack-loader": "^4.1.1",
+    "express": "^4.15.2",
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.9.0",
     "html-webpack-plugin": "^2.17.0",
     "postcss-loader": "^1.1.1",
+    "serve-favicon": "^2.4.2",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1",
     "webpack-merge": "^2.4.0"
-  },
-  "dependencies": {
-    "express": "^4.15.2",
-    "serve-favicon": "^2.4.2"
   }
 }
