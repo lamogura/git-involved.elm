@@ -5,6 +5,7 @@ type alias Issue =
     { title : String
     , body : String
     , commentCount : Int
+    , repository_url : String
     , labels : List Label
     }
 

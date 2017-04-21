@@ -9,7 +9,7 @@ import Html.Attributes exposing (class, href, id)
 import Html.Events exposing (onClick)
 import Routing exposing (Route(..))
 import Types exposing (Issue)
-import DummyData exposing (dummySearchResult)
+import DummyData exposing (dummySearchResult, repoNameFromUrl)
 
 
 init : Location -> ( Model, Cmd Msg )
@@ -89,14 +89,24 @@ mainPage =
 
 issueDiv : Issue -> Html Msg
 issueDiv issue =
-    div [ class "git-issue mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp" ]
-        [ div [ class "mdl-card__supporting-text" ]
-            [ Html.h4 [ class "issue-title" ] [ text ("Title: " ++ issue.title) ]
-            , div [ class "issue-body" ] [ text ("Body: " ++ issue.body) ]
+    div [ class "git-issue-card mdl-cell--12-col mdl-shadow--2dp" ]
+        [ div [ class "git-issue mdl-cell mdl-cell--9-col" ]
+            [ div [ class "mdl-card__supporting-text" ]
+                [ Html.h4 [ class "issue-title" ] [ text ("Title: " ++ issue.title) ]
+                , div [ class "issue-body" ] [ text ("Body: " ++ issue.body) ]
+                ]
+            , div [ class "mdl-card__actions" ]
+                [ div [ class "issue-labels" ] (List.map labelDiv issue.labels)
+                , div [ class "issue-comments mdl-button" ] [ text ("Comments: " ++ toString issue.commentCount) ]
+                ]
             ]
-        , div [ class "mdl-card__actions" ]
-            [ div [ class "issue-labels" ] (List.map labelDiv issue.labels)
-            , div [ class "issue-comments" ] [ text ("Comments: " ++ toString issue.commentCount) ]
+        , div [ class "git-repo mdl-cell mdl-cell--3-col" ]
+            [ div [ class "mdl-card__supporting-text" ]
+                [ Html.h5 [ class "repo-title" ] [ text ("Repo: " ++ (repoNameFromUrl issue.repository_url)) ]
+                ]
+            , div [ class "mdl-card__actions" ]
+                [ div [ class "issue-comments mdl-button" ] [ text ("Comments: " ++ toString issue.commentCount) ]
+                ]
             ]
         ]
 

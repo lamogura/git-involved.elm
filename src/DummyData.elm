@@ -1,4 +1,4 @@
-module DummyData exposing (dummySearchResult, dummyIssue)
+module DummyData exposing (dummySearchResult, dummyIssue, repoNameFromUrl)
 
 import Types exposing (Issue, IssueSearchResult, Label)
 import Json.Decode exposing (Decoder, int, string, list)
@@ -18,7 +18,25 @@ issueDecoder =
         |> required "title" string
         |> required "body" string
         |> required "comments" int
+        |> required "repository_url" string
         |> required "labels" (list labelDecoder)
+
+
+repoNameFromUrl : String -> String
+repoNameFromUrl url =
+    let
+        name =
+            url
+                |> String.split "/"
+                |> List.reverse
+                |> List.head
+    in
+        case name of
+            Just string ->
+                string
+
+            Nothing ->
+                ""
 
 
 labelDecoder : Decoder Label
@@ -45,7 +63,7 @@ dummyIssue =
             issue
 
         Nothing ->
-            Issue "" "" 0 [ Label "" "" ]
+            Issue "" "" 0 "" [ Label "" "" ]
 
 
 dummyResult : String
