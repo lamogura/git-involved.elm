@@ -34,7 +34,7 @@ subscriptions model =
 
 main : Program Never Model Msg
 main =
-    Navigation.program OnLocationChange
+    Navigation.program Messages.OnLocationChange
         { init = init
         , view = view
         , update = update
