@@ -13,7 +13,7 @@
     "url": "https://github.com/lamogura/git-involved.elm/issues"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "./node_modules/.bin/elm-test tests/RunTestsInTerminal.elm",
     "client": "webpack-dev-server --hot --inline",
     "api": "node api.js",
     "start": "nf start",
