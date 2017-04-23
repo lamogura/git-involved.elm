@@ -14,7 +14,9 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack-dev-server --hot --inline",
+    "client": "webpack-dev-server --hot --inline",
+    "api": "node api.js",
+    "start": "nf start",
     "build": "webpack --progress --display-modules",
     "sdev": "nodemon server.js",
     "postinstall": "npm run build"
@@ -43,8 +45,13 @@
     "express": "^4.15.2",
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.9.0",
+    "foreman": "^2.0.0",
     "html-webpack-plugin": "^2.17.0",
+<<<<<<< c75921cab50e92d62e99b73cdf3b61ad2af5ed45
     "namespaced-console-logger": "^1.0.1",
+=======
+    "json-server": "0.9.5",
+>>>>>>> add fake api server
     "postcss-loader": "^1.1.1",
     "request": "^2.81.0",
     "request-promise": "^4.2.0",
