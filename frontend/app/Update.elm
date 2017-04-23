@@ -21,3 +21,6 @@ update msg model =
 
         Messages.GoToMainPage ->
             ( model, Navigation.newUrl "/" )
+
+        Messages.OnFetchIssues response ->
+            ( { model | issuesSearchResult = response }, Cmd.none )

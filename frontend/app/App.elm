@@ -7,6 +7,7 @@ import Routing
 import Models exposing (Model, initialModel, Issue)
 import Update exposing (update)
 import View exposing (view)
+import Commands exposing (fetchIssues)
 
 
 init : Location -> ( Model, Cmd Msg )
@@ -15,7 +16,7 @@ init location =
         currentRoute =
             Routing.parseLocation location
     in
-        ( initialModel currentRoute, Cmd.none )
+        ( initialModel currentRoute, fetchIssues )
 
 
 

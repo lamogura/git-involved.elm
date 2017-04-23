@@ -5,8 +5,8 @@ import Html.Attributes exposing (class, href, id)
 import Html.Events exposing (onClick)
 import Models exposing (Model)
 import Messages exposing (Msg)
-import RemoteData
-import DummyData exposing (dummySearchResult, repoNameFromUrl)
+import RemoteData exposing (WebData)
+import Commands exposing (repoNameFromUrl)
 
 
 view : Model -> Html Msg
@@ -19,7 +19,7 @@ page : Model -> Html Msg
 page model =
     case model.route of
         Models.MainPage ->
-            mainPage
+            mainPage model.issuesSearchResult
 
         Models.AboutPage ->
             aboutPage
@@ -28,8 +28,8 @@ page model =
             notFoundView
 
 
-mainPage : Html Msg
-mainPage =
+mainPage : WebData Models.IssueSearchResult -> Html Msg
+mainPage response =
     Html.body [ class "mdl-demo mdl-color-text--grey-700 mdl-base" ]
         [ div [ class "mdl-layout__container has-scrolling-header" ]
             [ div [ class "mdl-layout mdl-js-layout mdl-layout--fixed-header has-tabs is-upgraded" ]
@@ -41,11 +41,27 @@ mainPage =
                     ]
                 , Html.main_ [ class "mdl-layout__content mdl-color--grey-100" ]
                     [ Html.section [ class "section--center mdl-grid" ]
-                        (List.map issueDiv dummySearchResult.issues)
+                        (maybeIssueSearchResult response)
                     ]
                 ]
             ]
         ]
+
+
+maybeIssueSearchResult : WebData Models.IssueSearchResult -> List (Html Msg)
+maybeIssueSearchResult response =
+    case response of
+        RemoteData.NotAsked ->
+            [ text "" ]
+
+        RemoteData.Loading ->
+            [ text "Loading..." ]
+
+        RemoteData.Success issueSearchResult ->
+            List.map issueDiv issueSearchResult.issues
+
+        RemoteData.Failure error ->
+            [ text (toString error) ]
 
 
 issueDiv : Models.Issue -> Html Msg
