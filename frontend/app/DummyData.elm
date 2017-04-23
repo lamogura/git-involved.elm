@@ -1,6 +1,6 @@
 module DummyData exposing (dummySearchResult, dummyIssue, repoNameFromUrl)
 
-import Types exposing (Issue, IssueSearchResult, Label)
+import Models exposing (Issue, IssueSearchResult, Label)
 import Json.Decode exposing (Decoder, int, string, list)
 import Json.Decode.Pipeline exposing (decode, required)
 
