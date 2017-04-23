@@ -57,9 +57,13 @@
     "url-loader": "^0.5.7",
     "webpack": "^2.4.1",
     "webpack-dev-server": "^2.4.4",
+<<<<<<< 7ff8272196e6425028fcd5316c09ec37d424e0cc
     "webpack-merge": "^2.4.0"
   },
   "devDependencies": {
     "nodemon": "^1.11.0"
+=======
+    "webpack-merge": "^4.1.0"
+>>>>>>> upgrade webpack-merge
   }
 }
