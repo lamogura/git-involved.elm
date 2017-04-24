@@ -36,15 +36,20 @@
     "body-parser": "^1.17.1",
     "clean-webpack-plugin": "^0.1.16",
     "copy-webpack-plugin": "^4.0.1",
+<<<<<<< 1295ef130b920b4b2d71ca5a013bee0edb68ddff
     "cors": "^2.8.3",
     "dotenv-safe": "^4.0.3",
     "css-loader": "^0.28.0",
+=======
+    "css-loader": "^0.26.1",
+>>>>>>> fix tests
     "elm": "^0.18.0",
     "elm-hot-loader": "^0.5.4",
+    "elm-test": "^0.18.2",
     "elm-webpack-loader": "^4.1.1",
     "express": "^4.15.2",
     "extract-text-webpack-plugin": "^1.0.1",
-    "file-loader": "^0.11.1",
+    "file-loader": "^0.9.0",
     "foreman": "^2.0.0",
     "html-webpack-plugin": "^2.17.0",
     "namespaced-console-logger": "^1.0.1",
@@ -53,8 +58,9 @@
     "request": "^2.81.0",
     "request-promise": "^4.2.0",
     "serve-favicon": "^2.4.2",
-    "style-loader": "^0.16.1",
+    "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
+<<<<<<< 1295ef130b920b4b2d71ca5a013bee0edb68ddff
     "webpack": "^2.4.1",
     "webpack-dev-server": "^2.4.4",
 <<<<<<< 7ff8272196e6425028fcd5316c09ec37d424e0cc
@@ -65,5 +71,10 @@
 =======
     "webpack-merge": "^4.1.0"
 >>>>>>> upgrade webpack-merge
+=======
+    "webpack": "^1.13.1",
+    "webpack-dev-server": "^1.14.1",
+    "webpack-merge": "^2.4.0"
+>>>>>>> fix tests
   }
 }
