@@ -5,6 +5,14 @@ import Json.Decode exposing (Decoder, int, string, list)
 import Json.Decode.Pipeline exposing (decode, required)
 
 
+-- POST "/api" a JSON object with:
+-- {
+--   "route": "search/issues",
+--   "params": "language:javascript+no:assignee+is:open&sort=updated"
+-- }
+-- to get the actual search result from the server
+
+
 issueSearchResultDecoder : Decoder IssueSearchResult
 issueSearchResultDecoder =
     decode IssueSearchResult

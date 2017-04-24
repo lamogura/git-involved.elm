@@ -33,7 +33,7 @@ app.use(favicon(path.resolve(__dirname, '../dist', 'favicon.ico')))
 app.use(express.static(path.resolve(__dirname, '../dist')))
 
 // API routes
-app.use('/github', ensureLegitRequestSource, routes)
+app.use('/api', ensureLegitRequestSource, routes)
 
 // Render files
 app.get('*', function(req, res) {
