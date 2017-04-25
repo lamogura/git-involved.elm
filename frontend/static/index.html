@@ -16,6 +16,37 @@
       margin: 10px;
     }
 
+    .page-layout {
+      display: grid;
+      grid-template-columns: 200px auto 200px ;
+      grid-template-rows: 200px auto 100px ;
+    }
+
+    header {
+      grid-area: 1 / 4 / 1 / 1;
+      color: rgb(255,255,255);
+    }
+
+    /*#git-back {
+      grid-area: 1 / 1 / 1 / 1;
+    }
+
+    #caption {
+      grid-area: 1 / 2 / 2 / 2;
+    }*/
+
+    main {
+      grid-area: 2 / 2 / 2 / 2;
+    }
+
+    .left-sidebar {
+      grid-area: 2 / 1 / 2 / 1;
+    }
+
+    .right-sidebar {
+      grid-area: 2 / 3 / 2 / 3;
+    }
+
     .issue-title {
       margin-top: 0;
     }
