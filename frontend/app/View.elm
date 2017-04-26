@@ -30,23 +30,18 @@ page model =
 
 mainPage : WebData Models.IssueSearchResult -> Html Msg
 mainPage issuesSearchResult =
-    Html.body [ class "mdl-color-text--grey-700 mdl-base" ]
-        [ div [ class "mdl-layout__container has-scrolling-header" ]
-            [ div [ class "page-layout" ]
-                [ Html.header [ class "mdl-color--primary" ]
-                    [ div [ id "git-back" ]
-                        [ Html.h3 [] [ text "Git-Back" ] ]
-                    , div [ id "caption" ]
-                        [ Html.h3 [] [ text "Help out on some OPEN SOURCE projects" ] ]
-                    , div [ class "mdl-layout__header-row" ] []
-                    ]
-                , div [ class "left-sidebar mdl-color--grey-100" ] []
-                , div [ class "right-sidebar mdl-color--grey-100" ] []
-                , Html.main_ [ class "mdl-layout__content" ]
-                    [ Html.section [ class "section--center mdl-color--white mdl-grid mdl-shadow--2dp" ]
-                        (maybeIssueSearchResult issuesSearchResult)
-                    ]
+    Html.body [ class "mdl-color-text--grey-700" ]
+        [ div [ class "page-layout" ]
+            [ Html.header [ class "mdl-color--primary" ]
+                [ div [ id "git-back" ]
+                    [ Html.h3 [] [ text "Git-Back" ] ]
+                , div [ id "caption" ]
+                    [ Html.h3 [] [ text "Help out on some OPEN SOURCE projects" ] ]
                 ]
+            , div [ class "left-sidebar mdl-color--grey-100" ] []
+            , div [ class "right-sidebar mdl-color--grey-100" ] []
+            , Html.main_ [ class "mdl-shadow--4dp" ]
+                (maybeIssueSearchResult issuesSearchResult)
             ]
         ]
 
