@@ -2,12 +2,7 @@ module Routing exposing (..)
 
 import Navigation exposing (Location)
 import UrlParser exposing (..)
-
-
-type Route
-    = MainPage
-    | AboutPage
-    | NotFoundRoute
+import Models exposing (Route(..))
 
 
 matchers : Parser (Route -> a) a

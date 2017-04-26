@@ -1,4 +1,25 @@
-module Types exposing (..)
+module Models exposing (..)
+
+import RemoteData exposing (WebData)
+
+
+initialModel : Route -> Model
+initialModel route =
+    { issuesSearchResult = RemoteData.Loading
+    , route = route
+    }
+
+
+type alias Model =
+    { issuesSearchResult : WebData IssueSearchResult
+    , route : Route
+    }
+
+
+type alias IssueSearchResult =
+    { totalCount : Int
+    , issues : List Issue
+    }
 
 
 type alias Issue =
@@ -16,10 +37,10 @@ type alias Label =
     }
 
 
-type alias IssueSearchResult =
-    { totalCount : Int
-    , issues : List Issue
-    }
+type Route
+    = MainPage
+    | AboutPage
+    | NotFoundRoute
 
 
 
