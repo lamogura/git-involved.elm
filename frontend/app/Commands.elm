@@ -47,7 +47,7 @@ repoNameFromUrl url =
     in
         case urlParamsList of
             repoName :: repoOwner :: _ ->
-                "repoName: " ++ repoName ++ " owner: " ++ repoOwner
+                repoName ++ " by " ++ repoOwner
 
             _ :: [] ->
                 "wrong repo url"
