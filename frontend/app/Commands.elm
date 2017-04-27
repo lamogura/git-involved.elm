@@ -40,18 +40,20 @@ issueDecoder =
 repoNameFromUrl : String -> String
 repoNameFromUrl url =
     let
-        name =
+        urlParamsList =
             url
                 |> String.split "/"
                 |> List.reverse
-                |> List.head
     in
-        case name of
-            Just string ->
-                string
+        case urlParamsList of
+            repoName :: repoOwner :: _ ->
+                "repoName: " ++ repoName ++ " owner: " ++ repoOwner
 
-            Nothing ->
-                ""
+            _ :: [] ->
+                "wrong repo url"
+
+            [] ->
+                "wrong repo url"
 
 
 labelDecoder : Decoder Label
