@@ -32,16 +32,22 @@ mainPage : WebData Models.IssueSearchResult -> Html Msg
 mainPage issuesSearchResult =
     Html.body [ class "mdl-color-text--grey-700" ]
         [ div [ class "page-layout" ]
-            [ Html.header [ class "mdl-color--primary" ]
-                [ div [ id "git-back" ]
-                    [ Html.h4 [] [ text "Git-Back" ] ]
-                , div [ id "caption" ]
-                    [ Html.h2 [] [ text "Help out on some OPEN SOURCE projects" ] ]
+            [ Html.header [ class "hero is-info is-medium" ]
+                [ div [ class "git-back hero-head" ]
+                    [ div [ class "nav-left" ]
+                        [ Html.h3 [ class "column is-2" ] [ text "Git-Back" ] ]
+                    ]
+                , div [ class "caption hero-body" ]
+                    [ div [ class "container has-text-centered" ]
+                        [ Html.h1 [ class "title" ] [ text "Contribute to OPEN SOURCE" ]
+                        , Html.h2 [ class "subtitle" ] [ text "discover unassiged open single issues to help on your free time" ]
+                        ]
+                    ]
                 ]
-            , div [ class "left-sidebar mdl-color--grey-100" ] []
-            , div [ class "right-sidebar mdl-color--grey-100" ] []
-            , Html.main_ [ class "mdl-shadow--4dp" ]
-                (maybeIssueSearchResult issuesSearchResult)
+            , Html.main_ [ class "columns" ]
+                [ div [ class "column is-offset-1 is-10" ]
+                    (maybeIssueSearchResult issuesSearchResult)
+                ]
             ]
         ]
 
@@ -64,25 +70,23 @@ maybeIssueSearchResult response =
 
 issueDiv : Models.Issue -> Html Msg
 issueDiv issue =
-    div [ class "git-issue-card mdl-cell--12-col mdl-shadow--2dp" ]
-        [ div [ class "git-issue mdl-cell--9-col" ]
-            [ div [ class "mdl-card__supporting-text" ]
-                [ Html.h3 [ class "issue-title" ] [ text issue.title ]
-                , div [ class "issue-body" ]
+    div [ class "git-issue-card tile box" ]
+        [ div [ class "git-issue tile is-parent" ]
+            [ div [ class "tile is-child" ]
+                [ Html.h3 [ class "issue-title title" ] [ text issue.title ]
+                , Html.p [ class "issue-body" ]
                     [ if String.isEmpty issue.body then
                         text "No description"
                       else
                         text issue.body
                     ]
                 ]
-            , div [ class "mdl-card__actions" ]
-                [ div [ class "issue-comments mdl-button" ] [ text ("Comments: " ++ toString issue.commentCount) ]
-                , div [ class "issue-labels" ] (List.map labelDiv issue.labels)
-                ]
             ]
-        , div [ class "git-repo mdl-cell mdl-cell--3-col" ]
-            [ div [ class "mdl-card__supporting-text", id "git-repo" ]
-                [ Html.h5 [ class "repo-title" ] [ text (repoNameFromUrl issue.repository_url) ]
+        , div [ class "git-repo tile is-3 is-parent" ]
+            [ div [ class "tile git-repo is-child is-vertical" ]
+                [ Html.h5 [ class "repo-title title" ] [ text (repoNameFromUrl issue.repository_url) ]
+                , div [ class "issue-comments button" ] [ text ("Comments: " ++ toString issue.commentCount) ]
+                , div [ class "issue-labels tag" ] (List.map labelDiv issue.labels)
                 ]
             ]
         ]
