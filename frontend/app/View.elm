@@ -67,10 +67,10 @@ maybeIssueSearchResult response =
 issueDiv : Models.Issue -> Html Msg
 issueDiv issue =
     div [ class "issue-card mdl-cell--12-col mdl-shadow--2dp" ]
-        [ div [ class "issue-content mdl-cell--10-col" ]
+        [ div [ class "content mdl-cell--10-col" ]
             [ div [ class "mdl-card__supporting-text" ]
-                [ Html.h3 [ class "issue-title" ] [ text issue.title ]
-                , div [ class "issue-body" ]
+                [ Html.h3 [ class "title" ] [ text issue.title ]
+                , div [ class "body" ]
                     [ if String.isEmpty issue.body then
                         text "No description"
                       else
@@ -78,9 +78,9 @@ issueDiv issue =
                     ]
                 ]
             ]
-        , div [ class "git-repo mdl-cell--3-col" ]
+        , div [ class "repo mdl-cell--3-col" ]
             [ div [ class "" ]
-                [ Html.h5 [ class "repo-title" ] [ text (repoNameFromUrl issue.repository_url) ]
+                [ Html.h5 [ class "title" ] [ text (repoNameFromUrl issue.repository_url) ]
                 ]
             , div [ class "mdl-card__actions" ]
                 [ div [ class "issue-comments mdl-button" ] [ text ("Comments: " ++ toString issue.commentCount) ]

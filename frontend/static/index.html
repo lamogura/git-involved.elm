@@ -81,38 +81,39 @@
     display: flex;
     width:100%;
     margin: 25px 0px;
+    border-radius: 5px;
   }
 
-  .issue-title {
+  .issue-card > .content > .title {
     margin-top: 0;
   }
 
-  .git-repo {
-    padding: 16px;
-  }
-
-  .label {
-    margin: 5px;
-  }
-
-  .repo-title {
-    text-align: center;
-  }
-
-  .mdl-card__supporting-text {
-    padding: 16px 30px 30px 30px;
-    width: auto;
-  }
-
-  .issue-body {
-    min-height: 70px;
+  .issue-card .content .body {
+    min-height: 5rem;
     height: auto;
-    max-height: 11em;
+    max-height: 8.5rem;
     overflow: hidden;
   }
 
-  .issue-body:hover {
+  .issue-card .content .body:hover {
     max-height: none;
+  }
+
+  .issue-card .repo {
+    padding: 1rem;
+  }
+
+  .issue-card .repo .title {
+    text-align: center;
+  }
+
+  .label {
+    margin: 0.1rem;
+  }
+
+  .mdl-card__supporting-text {
+    padding: 0rem 2rem 2rem 2rem;
+    width: auto;
   }
 
   section.section--footer {
