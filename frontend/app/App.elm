@@ -8,6 +8,7 @@ import Models exposing (Model, initialModel, Issue)
 import Update exposing (update)
 import View exposing (view)
 import Commands exposing (fetchIssues)
+import Autocomplete
 
 
 init : Location -> ( Model, Cmd Message )
@@ -25,7 +26,7 @@ init location =
 
 subscriptions : Model -> Sub Message
 subscriptions model =
-    Sub.none
+    Sub.map SetAutoState Autocomplete.subscription
 
 
 
