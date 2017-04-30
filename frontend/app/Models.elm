@@ -41,6 +41,8 @@ type alias Issue =
     , repository_url : String
     , labels : List Label
     , id : Int
+    , createdAt : String
+    , updatedAt : String
     }
 
 

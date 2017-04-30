@@ -6,6 +6,7 @@ import Json.Decode exposing (Decoder, int, string, list)
 import Json.Decode.Pipeline exposing (decode, required)
 import Messages exposing (Message)
 import RemoteData
+import Date
 
 
 fetchIssues : Cmd Message
@@ -36,6 +37,22 @@ issueDecoder =
         |> required "repository_url" string
         |> required "labels" (list labelDecoder)
         |> required "id" int
+        |> required "created_at" string
+        |> required "updated_at" string
+
+
+
+{- 2017-04-16T08:31:05Z -}
+
+
+dateFrom : String -> String
+dateFrom sqlFormatDate =
+    case Date.fromString sqlFormatDate of
+        Ok date ->
+            toString (Date.month date) ++ " " ++ toString (Date.day date) ++ ", " ++ toString (Date.year date)
+
+        Err msg ->
+            "dateParseError"
 
 
 repoNameFromUrl : String -> String

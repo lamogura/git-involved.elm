@@ -6,9 +6,8 @@ import Html.Events exposing (onClick)
 import Models exposing (Model)
 import Messages exposing (Message(..))
 import RemoteData exposing (WebData)
-import Commands exposing (repoNameFromUrl)
+import Commands exposing (repoNameFromUrl, dateFrom)
 import Material
-import Material.Layout as Layout
 import Material.Button as Button
 import Material.Menu as Menu
 import Material.Textfield as Textfield
@@ -98,17 +97,29 @@ issueDiv issue mdl =
                         text issue.body
                     ]
                 ]
+            , Options.styled div
+                [ css "display" "flex"
+                , css "flex-direction" "row"
+                , css "align-items" "center"
+                , cs "mdl-card__actions"
+                ]
+                [ issueCardAction issue
+                , div [ class "issue-labels" ] (List.map labelDiv issue.labels)
+                ]
             ]
         , div [ class "repo mdl-cell--3-col" ]
             [ div [ class "" ]
                 [ Html.h5 [ class "title" ] [ text (repoNameFromUrl issue.repository_url) ]
                 ]
-            , div [ class "mdl-card__actions" ]
-                [ mdlButton issue mdl
-                , div [ class "issue-labels" ] (List.map labelDiv issue.labels)
-                ]
             ]
         ]
+
+
+issueCardAction : Models.Issue -> Html Message
+issueCardAction issue =
+    Options.styled div
+        [ css "padding" "1rem" ]
+        [ text ("opened this issue on " ++ (dateFrom issue.createdAt) ++ " - " ++ (toString issue.commentCount) ++ " comments") ]
 
 
 mdlButton : Models.Issue -> Material.Model -> Html Message
