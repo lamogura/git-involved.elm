@@ -1,10 +1,13 @@
 module Update exposing (..)
 
-import Models exposing (Model)
+import Models exposing (Model, Language)
 import Navigation
 import Messages exposing (Message(..))
 import Routing exposing (parseLocation)
 import Material
+import Autocomplete
+import Dom
+import Task
 
 
 update : Message -> Model -> ( Model, Cmd Message )
@@ -15,7 +18,7 @@ update msg model =
                 newRoute =
                     parseLocation location
             in
-                ( { model | route = newRoute }, Cmd.none )
+                { model | route = newRoute } ! []
 
         GoToAboutPage ->
             ( model, Navigation.newUrl "#about" )
@@ -29,11 +32,165 @@ update msg model =
         Mdl msg_ ->
             Material.update Mdl msg_ model
 
-        ButtonClick ->
-            ( model, Cmd.none )
-
         SelectOrderBy orderBy ->
-            ( { model | orderBy = orderBy }, Cmd.none )
+            { model | orderBy = orderBy } ! []
 
-        ChangeLanguage input ->
-            ( { model | language = input }, Cmd.none )
+        SetQuery newQuery ->
+            let
+                showMenu =
+                    not << List.isEmpty <| (acceptableLanguage newQuery model.languages)
+            in
+                { model | query = newQuery, showMenu = showMenu, selectedLanguage = Nothing } ! []
+
+        SetAutoState autoMsg ->
+            let
+                ( newState, maybeMsg ) =
+                    Autocomplete.update updateConfig autoMsg 5 model.autoState (acceptableLanguage model.query model.languages)
+
+                newModel =
+                    { model | autoState = newState }
+            in
+                case maybeMsg of
+                    Nothing ->
+                        newModel ! []
+
+                    Just updateMsg ->
+                        update updateMsg newModel
+
+        SelectLanguageKeyboard id ->
+            let
+                newModel =
+                    setQuery model id
+                        |> resetMenu
+            in
+                newModel ! []
+
+        SelectLanguageMouse id ->
+            let
+                newModel =
+                    setQuery model id
+                        |> resetMenu
+            in
+                ( newModel, Task.attempt (\_ -> NoOp) (Dom.focus "autocomplete-input") )
+
+        Wrap toTop ->
+            case model.selectedLanguage of
+                Just language ->
+                    update Reset model
+
+                Nothing ->
+                    if toTop then
+                        { model
+                            | autoState = Autocomplete.resetToLastItem updateConfig (acceptableLanguage model.query model.languages) 5 model.autoState
+                            , selectedLanguage = List.head <| List.reverse <| List.take 5 <| (acceptableLanguage model.query model.languages)
+                        }
+                            ! []
+                    else
+                        { model
+                            | autoState = Autocomplete.resetToFirstItem updateConfig (acceptableLanguage model.query model.languages) 5 model.autoState
+                            , selectedLanguage = List.head <| List.take 5 <| (acceptableLanguage model.query model.languages)
+                        }
+                            ! []
+
+        Reset ->
+            { model | autoState = Autocomplete.reset updateConfig model.autoState, selectedLanguage = Nothing } ! []
+
+        PreviewLanguage id ->
+            { model | selectedLanguage = Just <| getLanguageAtId model.languages id } ! []
+
+        HandleEscape ->
+            let
+                validOptions =
+                    not <| List.isEmpty (acceptableLanguage model.query model.languages)
+
+                handleEscape =
+                    if validOptions then
+                        model
+                            |> removeSelection
+                            |> resetMenu
+                    else
+                        { model | query = "" }
+                            |> removeSelection
+                            |> resetMenu
+
+                escapedModel =
+                    case model.selectedLanguage of
+                        Just language ->
+                            if model.query == toString language then
+                                model
+                                    |> resetInput
+                            else
+                                handleEscape
+
+                        Nothing ->
+                            handleEscape
+            in
+                escapedModel ! []
+
+        NoOp ->
+            model ! []
+
+
+setQuery : Model -> String -> Model
+setQuery model id =
+    { model
+        | query = toString <| getLanguageAtId model.languages id
+        , selectedLanguage = Just <| getLanguageAtId model.languages id
+    }
+
+
+getLanguageAtId : List Language -> String -> Language
+getLanguageAtId languages id =
+    List.filter (\language -> (toString language) == id) languages
+        |> List.head
+        |> Maybe.withDefault Models.Javascript
+
+
+removeSelection : Model -> Model
+removeSelection model =
+    { model | selectedLanguage = Nothing }
+
+
+resetMenu : Model -> Model
+resetMenu model =
+    { model
+        | autoState = Autocomplete.empty
+        , showMenu = False
+    }
+
+
+resetInput : Model -> Model
+resetInput model =
+    { model | query = "" }
+        |> removeSelection
+        |> resetMenu
+
+
+acceptableLanguage : String -> List Language -> List Language
+acceptableLanguage query languages =
+    let
+        lowerQuery =
+            String.toLower query
+    in
+        List.filter (String.contains lowerQuery << String.toLower << toString) languages
+
+
+updateConfig : Autocomplete.UpdateConfig Message Language
+updateConfig =
+    Autocomplete.updateConfig
+        { toId = toString
+        , onKeyDown =
+            \code maybeId ->
+                if code == 38 || code == 40 then
+                    Maybe.map PreviewLanguage maybeId
+                else if code == 13 then
+                    Maybe.map SelectLanguageKeyboard maybeId
+                else
+                    Just <| Reset
+        , onTooLow = Just <| Wrap False
+        , onTooHigh = Just <| Wrap True
+        , onMouseEnter = \id -> Just <| PreviewLanguage id
+        , onMouseLeave = \_ -> Nothing
+        , onMouseClick = \id -> Just <| SelectLanguageMouse id
+        , separateSelections = False
+        }

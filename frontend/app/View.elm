@@ -5,10 +5,13 @@ import Html.Attributes exposing (class, style, href, id)
 import Html.Events exposing (onClick)
 import Models exposing (Model)
 import Messages exposing (Message(..))
+import Update
+import Autocomplete
+import Autocomplete.DefaultStyles as DefaultStyles
 import RemoteData exposing (WebData)
+import Json.Decode as Json
 import Commands exposing (repoNameFromUrl, dateFrom)
 import Material
-import Material.Button as Button
 import Material.Menu as Menu
 import Material.Textfield as Textfield
 import Material.Options as Options exposing (css, cs, when, styled)
@@ -74,7 +77,7 @@ mainPage model =
                     , css "flex-direction" "row"
                     , css "justify-content" "center"
                     ]
-                    [ mdlTextfield model
+                    [ autoComplete model
                     , styled div
                         [ css "margin-top" "20px"
                         , css "margin-left" "1rem"
@@ -163,18 +166,94 @@ issueCardAction issue =
         [ text ("opened this issue on " ++ (dateFrom issue.createdAt) ++ " - " ++ (toString issue.commentCount) ++ " comments") ]
 
 
-mdlTextfield : Model -> Html Message
-mdlTextfield model =
-    Textfield.render Mdl
-        [ 17 ]
-        model.mdl
-        [ Textfield.label "Show me repos using"
-        , Textfield.floatingLabel
-        , Textfield.value model.language
-        , Textfield.autofocus
-        , Options.onInput ChangeLanguage
-        ]
-        []
+autoComplete : Model -> Html Message
+autoComplete model =
+    let
+        options =
+            { preventDefault = True, stopPropagation = False }
+
+        dec =
+            (Json.map
+                (\code ->
+                    if code == 38 || code == 40 then
+                        Ok NoOp
+                    else if code == 27 then
+                        Ok HandleEscape
+                    else
+                        Err "not handling that key"
+                )
+                Html.Events.keyCode
+            )
+                |> Json.andThen
+                    fromResult
+
+        fromResult : Result String a -> Json.Decoder a
+        fromResult result =
+            case result of
+                Ok val ->
+                    Json.succeed val
+
+                Err reason ->
+                    Json.fail reason
+
+        menu =
+            if model.showMenu then
+                [ viewMenu model ]
+            else
+                []
+
+        query =
+            case model.selectedLanguage of
+                Just language ->
+                    toString language
+
+                Nothing ->
+                    model.query
+    in
+        div []
+            (List.append
+                [ Textfield.render Mdl
+                    [ 17 ]
+                    model.mdl
+                    [ Textfield.label "Show me repos using"
+                    , Textfield.floatingLabel
+                    , Textfield.value query
+                    , Textfield.autofocus
+                    , Options.onInput SetQuery
+                    , Options.id "autocomplete-input"
+                    ]
+                    []
+                ]
+                menu
+            )
+
+
+viewMenu : Model -> Html Message
+viewMenu model =
+    div
+        [ style DefaultStyles.menuStyles ]
+        [ Html.map SetAutoState (Autocomplete.view viewConfig 5 model.autoState (Update.acceptableLanguage model.query model.languages)) ]
+
+
+viewConfig : Autocomplete.ViewConfig Models.Language
+viewConfig =
+    let
+        customizedLi keySelected mouseSelected language =
+            { attributes =
+                [ if keySelected || mouseSelected then
+                    style DefaultStyles.selectedItemStyles
+                  else
+                    style DefaultStyles.itemStyles
+                , id (toString language)
+                ]
+            , children = [ Html.text (toString language) ]
+            }
+    in
+        Autocomplete.viewConfig
+            { toId = toString
+            , ul = [ style DefaultStyles.listStyles ]
+            , li = customizedLi
+            }
 
 
 mdlMenu : Material.Model -> Html Message

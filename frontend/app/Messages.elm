@@ -4,6 +4,7 @@ import Models exposing (IssueSearchResult, OrderBy)
 import RemoteData exposing (WebData)
 import Navigation exposing (Location)
 import Material
+import Autocomplete
 
 
 type Message
@@ -12,6 +13,13 @@ type Message
     | GoToAboutPage
     | GoToMainPage
     | Mdl (Material.Msg Message)
-    | ButtonClick
     | SelectOrderBy OrderBy
-    | ChangeLanguage String
+    | SetAutoState Autocomplete.Msg
+    | SetQuery String
+    | PreviewLanguage String
+    | SelectLanguageMouse String
+    | Reset
+    | Wrap Bool
+    | SelectLanguageKeyboard String
+    | NoOp
+    | HandleEscape
