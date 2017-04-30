@@ -42,19 +42,17 @@ mainPage model =
                 , css "grid-area" "header"
                 , css "color" "rgb(255,255,255)"
                 ]
-                [ styled div
-                    [ css "margin-left" "1rem" ]
-                    [ Html.h5 [] [ text "Git-Back" ] ]
-                , styled div
+                [ styled Html.h5 [ css "margin" "1rem" ] [ text "Git-Back" ]
+                , styled Html.h3
                     [ css "text-align" "center"
                     , css "margin-top" "5rem"
                     ]
-                    [ Html.h3 [] [ text "Contribute to open source" ] ]
-                , styled div
+                    [ text "Contribute to open source" ]
+                , styled Html.h6
                     [ css "text-align" "center"
                     , css "margin-bottom" "3rem"
                     ]
-                    [ Html.h6 [] [ text "Help out on unassigned open issues" ] ]
+                    [ text "Help out on unassigned open issues" ]
                 ]
             , styled div
                 [ cs "mdl-color--grey-100"
@@ -118,7 +116,7 @@ issueDiv issue mdl =
         ]
         [ div [ class "content mdl-cell--10-col" ]
             [ styled div
-                [ css "padding" "0rem 2rem 0rem 2rem"
+                [ css "padding" "0rem 2rem"
                 , css "width" "auto"
                 , cs "mdl-card__supporting-text"
                 ]
@@ -153,9 +151,7 @@ issueDiv issue mdl =
             [ cs "repo mdl-cell--3-col"
             , css "padding" "1rem"
             ]
-            [ div [ class "" ]
-                [ Html.h5 [ class "title" ] [ text (repoNameFromUrl issue.repository_url) ]
-                ]
+            [ Html.h5 [ class "title" ] [ text (repoNameFromUrl issue.repository_url) ]
             ]
         ]
 
@@ -165,18 +161,6 @@ issueCardAction issue =
     styled div
         [ css "padding" "1rem" ]
         [ text ("opened this issue on " ++ (dateFrom issue.createdAt) ++ " - " ++ (toString issue.commentCount) ++ " comments") ]
-
-
-mdlButton : Models.Issue -> Material.Model -> Html Message
-mdlButton issue mdlModel =
-    Button.render Mdl
-        [ issue.id ]
-        mdlModel
-        [ Button.ripple
-        , Button.flat
-        , Options.onClick ButtonClick
-        ]
-        [ text ("Comments: " ++ toString issue.commentCount) ]
 
 
 mdlTextfield : Model -> Html Message
