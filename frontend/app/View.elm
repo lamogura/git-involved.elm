@@ -85,7 +85,7 @@ mainPage model =
                         [ text ("Order by: " ++ toString model.orderBy) ]
                     , mdlMenu model.mdl
                     ]
-                , div [ class "issues-section" ] (maybeIssueSearchResult model)
+                , div [] (maybeIssueSearchResult model)
                 ]
             ]
         ]
@@ -124,8 +124,7 @@ issueDiv issue mdl =
                 , cs "mdl-card__supporting-text"
                 ]
                 [ styled Html.h3
-                    [ cs "title"
-                    , css "margin-top" "1rem"
+                    [ css "margin-top" "1rem"
                     ]
                     [ text issue.title ]
                 , styled div
@@ -147,14 +146,14 @@ issueDiv issue mdl =
                 , cs "mdl-card__actions"
                 ]
                 [ issueCardAction issue
-                , div [ class "issue-labels" ] (List.map labelDiv issue.labels)
+                , div [] (List.map labelDiv issue.labels)
                 ]
             ]
         , styled div
             [ cs "repo mdl-cell--3-col"
             , css "padding" "1rem"
             ]
-            [ Html.h5 [ class "title" ] [ text (repoNameFromUrl issue.repository_url) ]
+            [ Html.h5 [] [ text (repoNameFromUrl issue.repository_url) ]
             ]
         ]
 
