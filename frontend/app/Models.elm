@@ -9,9 +9,9 @@ initialModel : Route -> Model
 initialModel route =
     { issuesSearchResult = RemoteData.Loading
     , route = route
-    , languages = [ Javascript, Ruby, Elm, Java ]
+    , languages = [ "Javascript", "Ruby", "Elm", "Java" ]
     , autoState = Autocomplete.empty
-    , selectedLanguage = Just Javascript
+    , selectedLanguage = Just "Javascript"
     , showMenu = False
     , query = "Javascript"
     , orderBy = LastUpdated
@@ -22,9 +22,9 @@ initialModel route =
 type alias Model =
     { issuesSearchResult : WebData IssueSearchResult
     , route : Route
-    , languages : List Language
+    , languages : List String
     , autoState : Autocomplete.State
-    , selectedLanguage : Maybe Language
+    , selectedLanguage : Maybe String
     , showMenu : Bool
     , query : String
     , orderBy : OrderBy
@@ -36,13 +36,6 @@ type alias IssueSearchResult =
     { totalCount : Int
     , issues : List Issue
     }
-
-
-type Language
-    = Ruby
-    | Javascript
-    | Elm
-    | Java
 
 
 type OrderBy

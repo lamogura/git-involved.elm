@@ -1,6 +1,6 @@
 module Update exposing (..)
 
-import Models exposing (Model, Language)
+import Models exposing (Model)
 import Navigation
 import Messages exposing (Message(..))
 import Routing exposing (parseLocation)
@@ -116,7 +116,7 @@ update msg model =
                 escapedModel =
                     case model.selectedLanguage of
                         Just language ->
-                            if model.query == toString language then
+                            if model.query == language then
                                 model
                                     |> resetInput
                             else
@@ -134,16 +134,16 @@ update msg model =
 setQuery : Model -> String -> Model
 setQuery model id =
     { model
-        | query = toString <| getLanguageAtId model.languages id
+        | query = getLanguageAtId model.languages id
         , selectedLanguage = Just <| getLanguageAtId model.languages id
     }
 
 
-getLanguageAtId : List Language -> String -> Language
+getLanguageAtId : List String -> String -> String
 getLanguageAtId languages id =
-    List.filter (\language -> (toString language) == id) languages
+    List.filter (\language -> language == id) languages
         |> List.head
-        |> Maybe.withDefault Models.Javascript
+        |> Maybe.withDefault "Javascript"
 
 
 removeSelection : Model -> Model
@@ -166,19 +166,19 @@ resetInput model =
         |> resetMenu
 
 
-acceptableLanguage : String -> List Language -> List Language
+acceptableLanguage : String -> List String -> List String
 acceptableLanguage query languages =
     let
         lowerQuery =
             String.toLower query
     in
-        List.filter (String.contains lowerQuery << String.toLower << toString) languages
+        List.filter (String.contains lowerQuery << String.toLower) languages
 
 
-updateConfig : Autocomplete.UpdateConfig Message Language
+updateConfig : Autocomplete.UpdateConfig Message String
 updateConfig =
     Autocomplete.updateConfig
-        { toId = toString
+        { toId = identity
         , onKeyDown =
             \code maybeId ->
                 if code == 38 || code == 40 then

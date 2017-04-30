@@ -205,7 +205,7 @@ autoComplete model =
         query =
             case model.selectedLanguage of
                 Just language ->
-                    toString language
+                    language
 
                 Nothing ->
                     model.query
@@ -235,7 +235,7 @@ viewMenu model =
         [ Html.map SetAutoState (Autocomplete.view viewConfig 5 model.autoState (Update.acceptableLanguage model.query model.languages)) ]
 
 
-viewConfig : Autocomplete.ViewConfig Models.Language
+viewConfig : Autocomplete.ViewConfig String
 viewConfig =
     let
         customizedLi keySelected mouseSelected language =
@@ -244,13 +244,13 @@ viewConfig =
                     style DefaultStyles.selectedItemStyles
                   else
                     style DefaultStyles.itemStyles
-                , id (toString language)
+                , id language
                 ]
-            , children = [ Html.text (toString language) ]
+            , children = [ Html.text (language) ]
             }
     in
         Autocomplete.viewConfig
-            { toId = toString
+            { toId = identity
             , ul = [ style DefaultStyles.listStyles ]
             , li = customizedLi
             }
