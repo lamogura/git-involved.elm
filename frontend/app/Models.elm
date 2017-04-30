@@ -1,18 +1,21 @@
 module Models exposing (..)
 
 import RemoteData exposing (WebData)
+import Material
 
 
 initialModel : Route -> Model
 initialModel route =
     { issuesSearchResult = RemoteData.Loading
     , route = route
+    , mdl = Material.model
     }
 
 
 type alias Model =
     { issuesSearchResult : WebData IssueSearchResult
     , route : Route
+    , mdl : Material.Model
     }
 
 
@@ -28,6 +31,7 @@ type alias Issue =
     , commentCount : Int
     , repository_url : String
     , labels : List Label
+    , id : Int
     }
 
 

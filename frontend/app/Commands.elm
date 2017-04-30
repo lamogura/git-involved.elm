@@ -4,11 +4,11 @@ import Http
 import Models exposing (Issue, IssueSearchResult, Label)
 import Json.Decode exposing (Decoder, int, string, list)
 import Json.Decode.Pipeline exposing (decode, required)
-import Messages exposing (Msg)
+import Messages exposing (Message)
 import RemoteData
 
 
-fetchIssues : Cmd Msg
+fetchIssues : Cmd Message
 fetchIssues =
     Http.get fetchIssuesUrl issueSearchResultDecoder
         |> RemoteData.sendRequest
@@ -35,6 +35,7 @@ issueDecoder =
         |> required "comments" int
         |> required "repository_url" string
         |> required "labels" (list labelDecoder)
+        |> required "id" int
 
 
 repoNameFromUrl : String -> String

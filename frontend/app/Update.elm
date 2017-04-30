@@ -2,25 +2,32 @@ module Update exposing (..)
 
 import Models exposing (Model)
 import Navigation
-import Messages exposing (Msg)
+import Messages exposing (Message(..))
 import Routing exposing (parseLocation)
+import Material
 
 
-update : Msg -> Model -> ( Model, Cmd Msg )
+update : Message -> Model -> ( Model, Cmd Message )
 update msg model =
     case msg of
-        Messages.OnLocationChange location ->
+        OnLocationChange location ->
             let
                 newRoute =
                     parseLocation location
             in
                 ( { model | route = newRoute }, Cmd.none )
 
-        Messages.GoToAboutPage ->
+        GoToAboutPage ->
             ( model, Navigation.newUrl "#about" )
 
-        Messages.GoToMainPage ->
+        GoToMainPage ->
             ( model, Navigation.newUrl "/" )
 
-        Messages.OnFetchIssues response ->
+        OnFetchIssues response ->
             ( { model | issuesSearchResult = response }, Cmd.none )
+
+        Mdl msg_ ->
+            Material.update Mdl msg_ model
+
+        ButtonClick ->
+            ( model, Cmd.none )

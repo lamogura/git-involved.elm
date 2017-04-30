@@ -4,22 +4,26 @@ import Html exposing (Html, button, div, h1, a, p, span, text)
 import Html.Attributes exposing (class, style, href, id)
 import Html.Events exposing (onClick)
 import Models exposing (Model)
-import Messages exposing (Msg)
+import Messages exposing (Message(..))
 import RemoteData exposing (WebData)
 import Commands exposing (repoNameFromUrl)
+import Material
+import Material.Button as Button
+import Material.Color as Color
+import Material.Options as Options exposing (css, cs, when)
 
 
-view : Model -> Html Msg
+view : Model -> Html Message
 view model =
     div []
         [ page model ]
 
 
-page : Model -> Html Msg
+page : Model -> Html Message
 page model =
     case model.route of
         Models.MainPage ->
-            mainPage model.issuesSearchResult
+            mainPage model.issuesSearchResult model.mdl
 
         Models.AboutPage ->
             aboutPage
@@ -28,8 +32,8 @@ page model =
             notFoundView
 
 
-mainPage : WebData Models.IssueSearchResult -> Html Msg
-mainPage issuesSearchResult =
+mainPage : WebData Models.IssueSearchResult -> Material.Model -> Html Message
+mainPage issuesSearchResult mdl =
     Html.body [ class "mdl-color-text--grey-700" ]
         [ div [ class "page-layout" ]
             [ Html.header [ class "mdl-color--primary" ]
@@ -43,13 +47,13 @@ mainPage issuesSearchResult =
             , div [ class "left-sidebar mdl-color--grey-100" ] []
             , div [ class "right-sidebar mdl-color--grey-100" ] []
             , Html.main_ [ class "mdl-shadow--4dp" ]
-                (maybeIssueSearchResult issuesSearchResult)
+                (maybeIssueSearchResult issuesSearchResult mdl)
             ]
         ]
 
 
-maybeIssueSearchResult : WebData Models.IssueSearchResult -> List (Html Msg)
-maybeIssueSearchResult response =
+maybeIssueSearchResult : WebData Models.IssueSearchResult -> Material.Model -> List (Html Message)
+maybeIssueSearchResult response mdl =
     case response of
         RemoteData.NotAsked ->
             [ text "" ]
@@ -59,13 +63,14 @@ maybeIssueSearchResult response =
 
         RemoteData.Success issueSearchResult ->
             List.map issueDiv issueSearchResult.issues
+                |> List.map (\f -> f mdl)
 
         RemoteData.Failure error ->
             [ text (toString error) ]
 
 
-issueDiv : Models.Issue -> Html Msg
-issueDiv issue =
+issueDiv : Models.Issue -> Material.Model -> Html Message
+issueDiv issue mdl =
     div [ class "issue-card mdl-cell--12-col mdl-shadow--2dp" ]
         [ div [ class "content mdl-cell--10-col" ]
             [ div [ class "mdl-card__supporting-text" ]
@@ -83,14 +88,26 @@ issueDiv issue =
                 [ Html.h5 [ class "title" ] [ text (repoNameFromUrl issue.repository_url) ]
                 ]
             , div [ class "mdl-card__actions" ]
-                [ div [ class "issue-comments mdl-button" ] [ text ("Comments: " ++ toString issue.commentCount) ]
+                [ mdlButton issue mdl
                 , div [ class "issue-labels" ] (List.map labelDiv issue.labels)
                 ]
             ]
         ]
 
 
-labelDiv : Models.Label -> Html Msg
+mdlButton : Models.Issue -> Material.Model -> Html Message
+mdlButton issue mdlModel =
+    Button.render Mdl
+        [ issue.id ]
+        mdlModel
+        [ Button.ripple
+        , Button.flat
+        , Options.onClick ButtonClick
+        ]
+        [ text ("Comments: " ++ toString issue.commentCount) ]
+
+
+labelDiv : Models.Label -> Html Message
 labelDiv label =
     span
         [ class "label mdl-chip"
@@ -99,7 +116,7 @@ labelDiv label =
         [ span [ class "mdl-chip__text" ] [ text (label.name) ] ]
 
 
-aboutPage : Html Msg
+aboutPage : Html Message
 aboutPage =
     div [ class "jumbotron" ]
         [ div [ class "container" ]
