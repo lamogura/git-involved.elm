@@ -8,8 +8,10 @@ import Messages exposing (Message(..))
 import RemoteData exposing (WebData)
 import Commands exposing (repoNameFromUrl)
 import Material
+import Material.Layout as Layout
 import Material.Button as Button
-import Material.Color as Color
+import Material.Menu as Menu
+import Material.Textfield as Textfield
 import Material.Options as Options exposing (css, cs, when)
 
 
@@ -23,7 +25,7 @@ page : Model -> Html Message
 page model =
     case model.route of
         Models.MainPage ->
-            mainPage model.issuesSearchResult model.mdl
+            mainPage model
 
         Models.AboutPage ->
             aboutPage
@@ -32,8 +34,8 @@ page model =
             notFoundView
 
 
-mainPage : WebData Models.IssueSearchResult -> Material.Model -> Html Message
-mainPage issuesSearchResult mdl =
+mainPage : Model -> Html Message
+mainPage model =
     Html.body [ class "mdl-color-text--grey-700" ]
         [ div [ class "page-layout" ]
             [ Html.header [ class "mdl-color--primary" ]
@@ -47,14 +49,28 @@ mainPage issuesSearchResult mdl =
             , div [ class "left-sidebar mdl-color--grey-100" ] []
             , div [ class "right-sidebar mdl-color--grey-100" ] []
             , Html.main_ [ class "mdl-shadow--4dp" ]
-                (maybeIssueSearchResult issuesSearchResult mdl)
+                [ Options.styled div
+                    [ css "display" "flex"
+                    , css "flex-direction" "row"
+                    , css "justify-content" "center"
+                    ]
+                    [ mdlTextfield model
+                    , Options.styled div
+                        [ css "margin-top" "20px"
+                        , css "margin-left" "1rem"
+                        ]
+                        [ text ("Order by: " ++ toString model.orderBy) ]
+                    , mdlMenu model.mdl
+                    ]
+                , div [ class "issues-section" ] (maybeIssueSearchResult model)
+                ]
             ]
         ]
 
 
-maybeIssueSearchResult : WebData Models.IssueSearchResult -> Material.Model -> List (Html Message)
-maybeIssueSearchResult response mdl =
-    case response of
+maybeIssueSearchResult : Model -> List (Html Message)
+maybeIssueSearchResult model =
+    case model.issuesSearchResult of
         RemoteData.NotAsked ->
             [ text "" ]
 
@@ -63,7 +79,7 @@ maybeIssueSearchResult response mdl =
 
         RemoteData.Success issueSearchResult ->
             List.map issueDiv issueSearchResult.issues
-                |> List.map (\f -> f mdl)
+                |> List.map (\f -> f model.mdl)
 
         RemoteData.Failure error ->
             [ text (toString error) ]
@@ -105,6 +121,39 @@ mdlButton issue mdlModel =
         , Options.onClick ButtonClick
         ]
         [ text ("Comments: " ++ toString issue.commentCount) ]
+
+
+mdlTextfield : Model -> Html Message
+mdlTextfield model =
+    Textfield.render Mdl
+        [ 17 ]
+        model.mdl
+        [ Textfield.label "Show me repos using"
+        , Textfield.floatingLabel
+        , Textfield.value model.language
+        , Textfield.autofocus
+        , Options.onInput ChangeLanguage
+        ]
+        []
+
+
+mdlMenu : Material.Model -> Html Message
+mdlMenu mdlModel =
+    Menu.render Mdl
+        [ 1, 2, 3, 4 ]
+        mdlModel
+        [ Menu.ripple
+        , Menu.bottomRight
+        , Menu.icon "arrow_drop_down"
+        , Options.css "margin-top" "1rem"
+        ]
+        [ Menu.item
+            [ Menu.onSelect (SelectOrderBy Models.LastUpdated) ]
+            [ text "Last updated" ]
+        , Menu.item
+            [ Menu.onSelect (SelectOrderBy Models.MostPopular) ]
+            [ text "Most popular" ]
+        ]
 
 
 labelDiv : Models.Label -> Html Message

@@ -31,3 +31,9 @@ update msg model =
 
         ButtonClick ->
             ( model, Cmd.none )
+
+        SelectOrderBy orderBy ->
+            ( { model | orderBy = orderBy }, Cmd.none )
+
+        ChangeLanguage input ->
+            ( { model | language = input }, Cmd.none )

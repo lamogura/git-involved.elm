@@ -8,6 +8,8 @@ initialModel : Route -> Model
 initialModel route =
     { issuesSearchResult = RemoteData.Loading
     , route = route
+    , language = "Javascript"
+    , orderBy = LastUpdated
     , mdl = Material.model
     }
 
@@ -15,6 +17,8 @@ initialModel route =
 type alias Model =
     { issuesSearchResult : WebData IssueSearchResult
     , route : Route
+    , language : String
+    , orderBy : OrderBy
     , mdl : Material.Model
     }
 
@@ -23,6 +27,11 @@ type alias IssueSearchResult =
     { totalCount : Int
     , issues : List Issue
     }
+
+
+type OrderBy
+    = LastUpdated
+    | MostPopular
 
 
 type alias Issue =
