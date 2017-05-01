@@ -39,10 +39,10 @@ page model =
 mainPage : Model -> Html Message
 mainPage model =
     Html.body [ class "mdl-color-text--grey-700" ]
-        [ div [ class "page-layout" ]
+        [ div [ class "page-layout mdl-color--grey-100" ]
             [ styled Html.header
                 [ cs "mdl-color--primary"
-                , css "grid-area" "header"
+                , css "padding" "1rem"
                 , css "color" "rgb(255,255,255)"
                 ]
                 [ styled Html.h5 [ css "margin" "1rem" ] [ text "Git-Back" ]
@@ -57,21 +57,8 @@ mainPage model =
                     ]
                     [ text "Help out on unassigned open issues" ]
                 ]
-            , styled div
-                [ cs "mdl-color--grey-100"
-                , css "grid-area" "sidebar"
-                ]
-                []
-            , styled div
-                [ cs "mdl-color--grey-100"
-                , css "grid-area" "sidebar2"
-                ]
-                []
             , styled Html.main_
-                [ cs "mdl-shadow--4dp"
-                , css "grid-area" "content"
-                , css "padding" "1rem"
-                ]
+                [ css "padding" "1rem" ]
                 [ styled div
                     [ css "display" "flex"
                     , css "flex-direction" "row"
@@ -79,7 +66,7 @@ mainPage model =
                     ]
                     [ autoComplete model
                     , styled div
-                        [ css "margin-top" "20px"
+                        [ css "margin-top" "1.5rem"
                         , css "margin-left" "1rem"
                         ]
                         [ text ("Order by: " ++ toString model.orderBy) ]
@@ -111,7 +98,7 @@ maybeIssueSearchResult model =
 issueDiv : Models.Issue -> Material.Model -> Html Message
 issueDiv issue mdl =
     styled div
-        [ cs "issue-card mdl-cell--12-col mdl-shadow--2dp"
+        [ cs "issue-card mdl-cell--12-col mdl-shadow--2dp mdl-color--white"
         , css "display" "flex"
         , css "width" "100%"
         , css "margin" "2rem 0px"
@@ -150,7 +137,7 @@ issueDiv issue mdl =
                 ]
             ]
         , styled div
-            [ cs "repo mdl-cell--3-col"
+            [ cs "repo mdl-cell--2-col"
             , css "padding" "1rem"
             ]
             [ Html.h5 [] [ text (repoNameFromUrl issue.repository_url) ]
