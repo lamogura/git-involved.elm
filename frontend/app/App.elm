@@ -7,7 +7,6 @@ import Routing
 import Models exposing (Model, initialModel, Issue)
 import Update exposing (update)
 import View exposing (view)
-import Commands exposing (fetchIssues)
 import Autocomplete
 
 
@@ -17,7 +16,7 @@ init location =
         currentRoute =
             Routing.parseLocation location
     in
-        ( initialModel currentRoute, fetchIssues )
+        ( initialModel currentRoute, Cmd.none )
 
 
 
@@ -26,7 +25,7 @@ init location =
 
 subscriptions : Model -> Sub Message
 subscriptions model =
-    Sub.map SetAutoState Autocomplete.subscription
+    Sub.map SetAutocompleteState Autocomplete.subscription
 
 
 
