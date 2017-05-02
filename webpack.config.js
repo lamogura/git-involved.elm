@@ -2,7 +2,6 @@ var path = require('path')
 var webpack = require('webpack')
 var merge = require('webpack-merge')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
-var autoprefixer = require('autoprefixer')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var CleanWebpackPlugin = require('clean-webpack-plugin')
 var CopyWebpackPlugin = require('copy-webpack-plugin')
@@ -22,12 +21,12 @@ var outputFilename = TARGET_ENV === 'production'
 var commonConfig = {
   output: {
     path: outputPath,
-    filename: `/static/js/${outputFilename}`,
+    filename: `./frontend/static/js/${outputFilename}`,
     // publicPath: '/'
   },
 
   resolve: {
-    extensions: ['', '.js', '.elm'],
+    extensions: ['.js', '.elm'],
   },
 
   module: {
@@ -42,13 +41,11 @@ var commonConfig = {
 
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'frontend/static/index.html',
+      template: './frontend/static/index.html',
       inject: 'body',
       filename: 'index.html',
     }),
   ],
-
-  postcss: [autoprefixer({ browsers: ['last 2 versions'] })],
 }
 
 // additional webpack settings for local env (when invoked by 'npm start')
@@ -92,14 +89,14 @@ if (TARGET_ENV === 'production') {
         {
           test: /\.elm$/,
           exclude: [/elm-stuff/, /node_modules/],
-          loader: 'elm-webpack',
+          loader: 'elm-webpack-loader',
         },
         {
           test: /\.(css|scss)$/,
-          loader: ExtractTextPlugin.extract('style-loader', [
-            'css-loader',
-            'postcss-loader',
-          ]),
+          loader: ExtractTextPlugin.extract({
+            fallback: 'style-loader',
+            use: ['css-loader', 'postcss-loader'],
+          }),
         },
       ],
     },
@@ -116,10 +113,11 @@ if (TARGET_ENV === 'production') {
         },
       ]),
 
-      new webpack.optimize.OccurenceOrderPlugin(),
+      new webpack.optimize.OccurrenceOrderPlugin(),
 
       // extract CSS into a separate file
-      new ExtractTextPlugin('static/css/[name]-[hash].css', {
+      new ExtractTextPlugin({
+        filename: 'static/css/[name]-[hash].css',
         allChunks: true,
       }),
 
