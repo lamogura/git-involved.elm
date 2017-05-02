@@ -39,7 +39,7 @@ page model =
 mainPage : Model -> Html Message
 mainPage model =
     Html.body [ class "mdl-color-text--grey-700" ]
-        [ div [ class "page-layout mdl-color--grey-100" ]
+        [ div [ class "page-layout mdl-color--grey-50" ]
             [ styled Html.header
                 [ cs "mdl-color--primary"
                 , css "padding" "1rem"
