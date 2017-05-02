@@ -60,7 +60,7 @@ if (TARGET_ENV === 'development') {
       historyApiFallback: true,
       contentBase: './frontend',
       proxy: {
-        '/api/*': 'http://localhost:9000',
+        '/api/*': 'http://localhost:5000',
       },
     },
 

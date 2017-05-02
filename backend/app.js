@@ -40,7 +40,7 @@ app.get('*', function(req, res) {
   res.render('index')
 })
 
-const server = app.listen(process.env.PORT || 9000, () => {
+const server = app.listen(process.env.PORT || 5000, () => {
   console.log(
     'Express server listening at http://%s:%s',
     server.address().address,
