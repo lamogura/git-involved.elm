@@ -3,7 +3,7 @@ module Commands exposing (..)
 import Http
 import Models exposing (Issue, IssueSearchResult, Label)
 import Json.Decode exposing (Decoder, int, string, list)
-import Json.Decode.Pipeline exposing (decode, required)
+import Json.Decode.Pipeline exposing (decode, required, optional)
 import Messages exposing (Message)
 import RemoteData
 import Date
@@ -31,7 +31,8 @@ fetchIssues =
                 , withCredentials = False
                 }
     in
-        RemoteData.sendRequest request
+        request
+            |> RemoteData.sendRequest
             |> Cmd.map Messages.OnFetchIssues
 
 
@@ -46,7 +47,7 @@ issueDecoder : Decoder Issue
 issueDecoder =
     decode Issue
         |> required "title" string
-        |> required "body" string
+        |> optional "body" string "No Body"
         |> required "comments" int
         |> required "repository_url" string
         |> required "labels" (list labelDecoder)
