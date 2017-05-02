@@ -59,6 +59,9 @@ if (TARGET_ENV === 'development') {
       // serve index.html in place of 404 responses
       historyApiFallback: true,
       contentBase: './frontend',
+      proxy: {
+        '/api/*': 'http://localhost:9000',
+      },
     },
 
     module: {

@@ -30,7 +30,8 @@ router.post('/', (req, res) => {
   log.info(`REQ GITHUB API: ${url}`)
 
   const reqOptions = {
-    headers: { 'User-Agent': 'Git-Involved' },
+    headers: { 'User-Agent': 'Git-Involved 1.0' },
+    json: true,
     url,
   }
 

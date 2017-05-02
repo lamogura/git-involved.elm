@@ -11,14 +11,28 @@ import Date
 
 fetchIssues : Cmd Message
 fetchIssues =
-    Http.get fetchIssuesUrl issueSearchResultDecoder
-        |> RemoteData.sendRequest
-        |> Cmd.map Messages.OnFetchIssues
+    let
+        bodyPayload =
+            """
+            {
+                "route": "search/issues",
+                "params": "q=language:javascript+is:open&sort=updated"
+            }
+            """
 
-
-fetchIssuesUrl : String
-fetchIssuesUrl =
-    "http://localhost:4000/issues"
+        request =
+            Http.request
+                { method = "POST"
+                , headers = [ Http.header "xlegit" "supersaiyan" ]
+                , url = "/api"
+                , body = Http.stringBody "application/json" bodyPayload
+                , expect = Http.expectJson issueSearchResultDecoder
+                , timeout = Nothing
+                , withCredentials = False
+                }
+    in
+        RemoteData.sendRequest request
+            |> Cmd.map Messages.OnFetchIssues
 
 
 issueSearchResultDecoder : Decoder IssueSearchResult
