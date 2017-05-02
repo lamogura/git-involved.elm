@@ -64,7 +64,11 @@ dateFrom : String -> String
 dateFrom sqlFormatDate =
     case Date.fromString sqlFormatDate of
         Ok date ->
-            toString (Date.month date) ++ " " ++ toString (Date.day date) ++ ", " ++ toString (Date.year date)
+            toString (Date.month date)
+                ++ " "
+                ++ toString (Date.day date)
+                ++ ", "
+                ++ toString (Date.year date)
 
         Err msg ->
             "dateParseError"
@@ -82,10 +86,7 @@ repoNameFromUrl url =
             repoName :: repoOwner :: _ ->
                 repoName ++ " by " ++ repoOwner
 
-            _ :: [] ->
-                "wrong repo url"
-
-            [] ->
+            _ ->
                 "wrong repo url"
 
 
