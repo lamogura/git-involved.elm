@@ -6,6 +6,7 @@ import Navigation exposing (Location)
 import Routing
 import Models exposing (Model, initialModel, Issue)
 import Update exposing (update)
+import Commands exposing (fetchIssues)
 import View exposing (view)
 import Autocomplete
 
@@ -16,7 +17,7 @@ init location =
         currentRoute =
             Routing.parseLocation location
     in
-        ( initialModel currentRoute, Cmd.none )
+        ( initialModel currentRoute, fetchIssues )
 
 
 
