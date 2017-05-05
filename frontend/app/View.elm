@@ -39,38 +39,30 @@ page model =
 mainPage : Model -> Html Message
 mainPage model =
     Html.body [ class "mdl-color-text--grey-700" ]
-        [ div [ class "page-layout mdl-color--grey-50" ]
+        [ div [ class "page-layout mdl-color--grey-200" ]
             [ styled Html.header
-                [ cs "mdl-color--primary"
-                , css "padding" "1rem"
+                [ cs "p1 mdl-color--primary"
                 , css "color" "rgb(255,255,255)"
                 ]
-                [ styled Html.h5 [ css "margin" "1rem" ] [ text "Git-Back" ]
+                [ styled Html.h5 [ cs "m2" ] [ text "Git-Back" ]
                 , styled Html.h3
-                    [ css "text-align" "center"
-                    , css "margin-top" "5rem"
-                    ]
+                    [ cs "mt4 center" ]
                     [ text "Contribute to open source" ]
                 , styled Html.h6
-                    [ css "text-align" "center"
-                    , css "margin-bottom" "3rem"
-                    ]
+                    [ cs "mb4 center" ]
                     [ text "Help out on unassigned open issues" ]
                 ]
             , styled Html.main_
-                [ css "padding" "1rem" ]
+                [ cs "p2 mx-auto max-width-4" ]
                 [ styled div
-                    [ css "display" "flex"
-                    , css "flex-direction" "row"
-                    , css "justify-content" "center"
-                    ]
+                    [ cs "flex flex-wrap justify-center" ]
                     [ autoComplete model
                     , styled div
-                        [ css "margin-top" "1.5rem"
-                        , css "margin-left" "1rem"
+                        [ cs "mt3 ml2 flex" ]
+                        [ text ("Order by:")
+                        , text (toString model.orderBy)
+                        , mdlMenu model.mdl
                         ]
-                        [ text ("Order by: " ++ toString model.orderBy) ]
-                    , mdlMenu model.mdl
                     ]
                 , div [] (maybeIssueSearchResult model)
                 ]
@@ -98,27 +90,17 @@ maybeIssueSearchResult model =
 issueDiv : Models.Issue -> Material.Model -> Html Message
 issueDiv issue mdl =
     styled div
-        [ cs "issue-card mdl-cell--12-col mdl-shadow--2dp mdl-color--white"
-        , css "display" "flex"
-        , css "width" "100%"
-        , css "margin" "2rem 0px"
-        , css "border-radius" "5px"
-        ]
-        [ div [ class "content mdl-cell--10-col" ]
+        [ cs "issue-card fit rounded flex my3 mdl-shadow--2dp mdl-color--white" ]
+        [ div [ class "content col col-10" ]
             [ styled div
-                [ css "padding" "0rem 2rem"
-                , css "width" "auto"
-                , cs "mdl-card__supporting-text"
-                ]
+                [ cs "fit py0 px3 mdl-card__supporting-text" ]
                 [ styled Html.h3
-                    [ css "margin-top" "1rem"
-                    ]
+                    [ cs "mt2" ]
                     [ text issue.title ]
                 , styled div
-                    [ cs "body"
+                    [ cs "body overflow-hidden"
                     , css "min-height" "5rem"
                     , css "height" "auto"
-                    , css "overflow" "hidden"
                     ]
                     [ if String.isEmpty issue.body then
                         text "No description"
@@ -127,18 +109,14 @@ issueDiv issue mdl =
                     ]
                 ]
             , styled div
-                [ css "display" "flex"
-                , css "flex-direction" "row"
-                , css "align-items" "center"
-                , cs "mdl-card__actions"
-                ]
+                [ cs "flex items-center mdl-card__actions" ]
                 [ issueCardAction issue
                 , div [] (List.map labelDiv issue.labels)
                 ]
             ]
         , styled div
-            [ cs "repo mdl-cell--2-col"
-            , css "padding" "1rem"
+            [ cs "repo fit p2 col col-2 xs-hide"
+            , css "overflow-wrap" "break-word"
             ]
             [ Html.h5 [] [ text (repoNameFromUrl issue.repository_url) ]
             ]
@@ -148,7 +126,7 @@ issueDiv issue mdl =
 issueCardAction : Models.Issue -> Html Message
 issueCardAction issue =
     styled div
-        [ css "padding" "1rem" ]
+        [ cs "p2" ]
         [ text ("opened this issue on " ++ (dateFrom issue.createdAt) ++ " - " ++ (toString issue.commentCount) ++ " comments") ]
 
 
@@ -250,7 +228,6 @@ mdlMenu mdlModel =
         [ Menu.ripple
         , Menu.bottomRight
         , Menu.icon "arrow_drop_down"
-        , Options.css "margin-top" "1rem"
         ]
         [ Menu.item
             [ Menu.onSelect (SelectOrderBy Models.LastUpdated) ]
@@ -264,10 +241,8 @@ mdlMenu mdlModel =
 labelDiv : Models.Label -> Html Message
 labelDiv label =
     styled span
-        [ css "text-align" "center"
-        , css "background-color" ("#" ++ label.color)
-        , css "margin" "0.1rem"
-        , cs "mdl-chip"
+        [ css "background-color" ("#" ++ label.color)
+        , cs "m1 center mdl-chip"
         ]
         [ span [ class "mdl-chip__text" ] [ text (label.name) ] ]
 
