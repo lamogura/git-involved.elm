@@ -96,15 +96,14 @@ issueDiv issue mdl =
         [ cs "issue-card fit rounded flex my3 mdl-shadow--2dp mdl-color--white" ]
         [ div [ class "content col col-10" ]
             [ styled div
-                [ cs "fit py0 px3 mdl-card__supporting-text" ]
+                [ cs "py0 pl3 mdl-card__supporting-text"
+                , css "width" "auto"
+                ]
                 [ styled Html.h3
                     [ cs "mt2" ]
                     [ text issue.title ]
                 , styled div
-                    [ cs "body overflow-hidden"
-                    , css "min-height" "5rem"
-                    , css "height" "auto"
-                    ]
+                    [ cs "body overflow-hidden" ]
                     [ if String.isEmpty issue.body then
                         text "No description"
                       else
