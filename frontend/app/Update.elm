@@ -10,6 +10,11 @@ import Dom
 import Task
 
 
+allLanguages : List String
+allLanguages =
+    [ "Javascript", "Ruby", "Elm", "Java" ]
+
+
 update : Message -> Model -> ( Model, Cmd Message )
 update msg model =
     case msg of
@@ -27,28 +32,28 @@ update msg model =
             ( model, Navigation.newUrl "/" )
 
         OnFetchIssues response ->
-            ( { model | issuesSearchResult = response }, Cmd.none )
+            { model | issuesSearchResult = response } ! []
 
         Mdl msg_ ->
             Material.update Mdl msg_ model
 
-        SelectOrderBy orderBy ->
-            { model | orderBy = orderBy } ! []
+        SetOrderIssuesBy orderBy ->
+            { model | orderIssuesBy = orderBy } ! []
 
         SetQuery newQuery ->
             let
                 showMenu =
-                    not << List.isEmpty <| (acceptableLanguage newQuery model.languages)
+                    not << List.isEmpty <| languageMatches newQuery
             in
-                { model | query = newQuery, showMenu = showMenu, selectedLanguage = Nothing } ! []
+                { model | languageQuery = newQuery, showLanguageMenu = showMenu, selectedLanguage = Nothing } ! []
 
         SetAutoState autoMsg ->
             let
                 ( newState, maybeMsg ) =
-                    Autocomplete.update updateConfig autoMsg 5 model.autoState (acceptableLanguage model.query model.languages)
+                    Autocomplete.update updateConfig autoMsg 5 model.autocompleteState (languageMatches model.languageQuery)
 
                 newModel =
-                    { model | autoState = newState }
+                    { model | autocompleteState = newState }
             in
                 case maybeMsg of
                     Nothing ->
@@ -61,7 +66,7 @@ update msg model =
             let
                 newModel =
                     setQuery model id
-                        |> resetMenu
+                        |> resetLanguageMenu
             in
                 newModel ! []
 
@@ -69,7 +74,7 @@ update msg model =
             let
                 newModel =
                     setQuery model id
-                        |> resetMenu
+                        |> resetLanguageMenu
             in
                 ( newModel, Task.attempt (\_ -> NoOp) (Dom.focus "autocomplete-input") )
 
@@ -81,42 +86,42 @@ update msg model =
                 Nothing ->
                     if toTop then
                         { model
-                            | autoState = Autocomplete.resetToLastItem updateConfig (acceptableLanguage model.query model.languages) 5 model.autoState
-                            , selectedLanguage = List.head <| List.reverse <| List.take 5 <| (acceptableLanguage model.query model.languages)
+                            | autocompleteState = Autocomplete.resetToLastItem updateConfig (languageMatches model.languageQuery) 5 model.autocompleteState
+                            , selectedLanguage = List.head <| List.reverse <| languageMatches model.languageQuery
                         }
                             ! []
                     else
                         { model
-                            | autoState = Autocomplete.resetToFirstItem updateConfig (acceptableLanguage model.query model.languages) 5 model.autoState
-                            , selectedLanguage = List.head <| List.take 5 <| (acceptableLanguage model.query model.languages)
+                            | autocompleteState = Autocomplete.resetToFirstItem updateConfig (languageMatches model.languageQuery) 5 model.autocompleteState
+                            , selectedLanguage = List.head <| languageMatches model.languageQuery
                         }
                             ! []
 
         Reset ->
-            { model | autoState = Autocomplete.reset updateConfig model.autoState, selectedLanguage = Nothing } ! []
+            { model | autocompleteState = Autocomplete.reset updateConfig model.autocompleteState, selectedLanguage = Nothing } ! []
 
         PreviewLanguage id ->
-            { model | selectedLanguage = Just <| getLanguageAtId model.languages id } ! []
+            { model | selectedLanguage = Just <| getLanguageAtId id } ! []
 
         HandleEscape ->
             let
                 validOptions =
-                    not <| List.isEmpty (acceptableLanguage model.query model.languages)
+                    not <| List.isEmpty (languageMatches model.languageQuery)
 
                 handleEscape =
                     if validOptions then
                         model
-                            |> removeSelection
-                            |> resetMenu
+                            |> removeSelectedLanguage
+                            |> resetLanguageMenu
                     else
-                        { model | query = "" }
-                            |> removeSelection
-                            |> resetMenu
+                        { model | languageQuery = "" }
+                            |> removeSelectedLanguage
+                            |> resetLanguageMenu
 
                 escapedModel =
                     case model.selectedLanguage of
                         Just language ->
-                            if model.query == language then
+                            if model.languageQuery == language then
                                 model
                                     |> resetInput
                             else
@@ -134,45 +139,45 @@ update msg model =
 setQuery : Model -> String -> Model
 setQuery model id =
     { model
-        | query = getLanguageAtId model.languages id
-        , selectedLanguage = Just <| getLanguageAtId model.languages id
+        | languageQuery = getLanguageAtId id
+        , selectedLanguage = Just <| getLanguageAtId id
     }
 
 
-getLanguageAtId : List String -> String -> String
-getLanguageAtId languages id =
-    List.filter (\language -> language == id) languages
+getLanguageAtId : String -> String
+getLanguageAtId id =
+    List.filter (\language -> language == id) allLanguages
         |> List.head
         |> Maybe.withDefault "Javascript"
 
 
-removeSelection : Model -> Model
-removeSelection model =
+removeSelectedLanguage : Model -> Model
+removeSelectedLanguage model =
     { model | selectedLanguage = Nothing }
 
 
-resetMenu : Model -> Model
-resetMenu model =
+resetLanguageMenu : Model -> Model
+resetLanguageMenu model =
     { model
-        | autoState = Autocomplete.empty
-        , showMenu = False
+        | autocompleteState = Autocomplete.empty
+        , showLanguageMenu = False
     }
 
 
 resetInput : Model -> Model
 resetInput model =
-    { model | query = "" }
-        |> removeSelection
-        |> resetMenu
+    { model | languageQuery = "" }
+        |> removeSelectedLanguage
+        |> resetLanguageMenu
 
 
-acceptableLanguage : String -> List String -> List String
-acceptableLanguage query languages =
+languageMatches : String -> List String
+languageMatches query =
     let
         lowerQuery =
             String.toLower query
     in
-        List.filter (String.contains lowerQuery << String.toLower) languages
+        List.filter (String.contains lowerQuery << String.toLower) allLanguages
 
 
 updateConfig : Autocomplete.UpdateConfig Message String
