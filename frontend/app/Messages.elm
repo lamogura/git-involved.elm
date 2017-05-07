@@ -1,25 +1,16 @@
 module Messages exposing (Message(..))
 
-import Models exposing (IssueSearchResult, OrderBy)
+import Models exposing (IssueSearchResult, OrderIssuesBy)
 import RemoteData exposing (WebData)
 import Navigation exposing (Location)
 import Material
-import Autocomplete
+import AutocompleteLang
+import Routing
 
 
 type Message
-    = OnLocationChange Location
+    = Rtg Routing.Message
     | OnFetchIssues (WebData IssueSearchResult)
-    | GoToAboutPage
-    | GoToMainPage
+    | Acl AutocompleteLang.Message
+    | SetOrderIssuesBy OrderIssuesBy
     | Mdl (Material.Msg Message)
-    | SelectOrderBy OrderBy
-    | SetAutoState Autocomplete.Msg
-    | SetQuery String
-    | PreviewLanguage String
-    | SelectLanguageMouse String
-    | Reset
-    | Wrap Bool
-    | SelectLanguageKeyboard String
-    | NoOp
-    | HandleEscape

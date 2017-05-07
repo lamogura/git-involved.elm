@@ -4,11 +4,11 @@ import Routing
 import Messages exposing (Message(..))
 import Navigation exposing (Location)
 import Routing
-import Models exposing (Model, initialModel, Issue)
+import Models exposing (Model, initialModel)
 import Update exposing (update)
-import View exposing (view)
 import Commands exposing (fetchIssues)
-import Autocomplete
+import View exposing (view)
+import AutocompleteLang
 
 
 init : Location -> ( Model, Cmd Message )
@@ -26,7 +26,7 @@ init location =
 
 subscriptions : Model -> Sub Message
 subscriptions model =
-    Sub.map SetAutoState Autocomplete.subscription
+    Sub.map Acl (AutocompleteLang.subscriptions model.autocompleteLang)
 
 
 
@@ -35,7 +35,7 @@ subscriptions model =
 
 main : Program Never Model Message
 main =
-    Navigation.program Messages.OnLocationChange
+    Navigation.program (\location -> Rtg (Routing.OnLocationChange location))
         { init = init
         , view = view
         , update = update
