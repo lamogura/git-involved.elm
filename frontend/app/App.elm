@@ -16,8 +16,11 @@ init location =
     let
         currentRoute =
             Routing.parseLocation location
+
+        initModel =
+            initialModel currentRoute
     in
-        ( initialModel currentRoute, fetchIssues )
+        ( initModel, fetchIssues initModel.selectedLanguage )
 
 
 

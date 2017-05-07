@@ -9,16 +9,17 @@ import RemoteData
 import Date
 
 
-fetchIssues : Cmd Message
-fetchIssues =
+fetchIssues : Maybe String -> Cmd Message
+fetchIssues language =
     let
+        queryLanguage =
+            Maybe.withDefault "Javascript" language
+                |> String.toLower
+
         bodyPayload =
-            """
-            {
-                "route": "search/issues",
-                "params": "q=language:javascript+is:open&sort=updated"
-            }
-            """
+            """{ "route": "search/issues", "params": "q=language:"""
+                ++ queryLanguage
+                ++ """+is:open&sort=updated" } """
 
         request =
             Http.request

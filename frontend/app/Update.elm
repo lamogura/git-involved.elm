@@ -4,6 +4,7 @@ import Models exposing (Model)
 import Navigation
 import Messages exposing (Message(..))
 import Routing exposing (parseLocation)
+import Commands exposing (fetchIssues)
 import Material
 import Autocomplete
 import Dom
@@ -37,8 +38,8 @@ update msg model =
         Mdl msg_ ->
             Material.update Mdl msg_ model
 
-        SetOrderIssuesBy orderBy ->
-            { model | orderIssuesBy = orderBy } ! []
+        SetOrderIssuesBy newOrder ->
+            { model | orderIssuesBy = newOrder } ! []
 
         SetQuery newQuery ->
             let
@@ -68,7 +69,7 @@ update msg model =
                     setQuery model id
                         |> resetLanguageMenu
             in
-                newModel ! []
+                newModel ! [ fetchIssues newModel.selectedLanguage ]
 
         SelectLanguageMouse id ->
             let
@@ -76,7 +77,10 @@ update msg model =
                     setQuery model id
                         |> resetLanguageMenu
             in
-                ( newModel, Task.attempt (\_ -> NoOp) (Dom.focus "autocomplete-input") )
+                newModel
+                    ! [ Task.attempt (\_ -> NoOp) (Dom.focus "autocomplete-input")
+                      , fetchIssues newModel.selectedLanguage
+                      ]
 
         Wrap toTop ->
             case model.selectedLanguage of
