@@ -195,7 +195,7 @@ viewMenu : Model -> Html Message
 viewMenu model =
     div
         [ style DefaultStyles.menuStyles ]
-        [ Html.map SetAutoState (Autocomplete.view viewConfig 5 model.autocompleteState (Update.languageMatches model.languageQuery Update.allLanguages)) ]
+        [ Html.map SetAutoState (Autocomplete.view viewConfig 5 model.autocompleteState (Update.languageMatches model.languageQuery)) ]
 
 
 viewConfig : Autocomplete.ViewConfig String

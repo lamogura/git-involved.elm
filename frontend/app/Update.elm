@@ -43,14 +43,14 @@ update msg model =
         SetQuery newQuery ->
             let
                 showMenu =
-                    not << List.isEmpty <| (languageMatches newQuery allLanguages)
+                    not << List.isEmpty <| languageMatches newQuery
             in
                 { model | languageQuery = newQuery, showLanguageMenu = showMenu, selectedLanguage = Nothing } ! []
 
         SetAutoState autoMsg ->
             let
                 ( newState, maybeMsg ) =
-                    Autocomplete.update updateConfig autoMsg 5 model.autocompleteState (languageMatches model.languageQuery allLanguages)
+                    Autocomplete.update updateConfig autoMsg 5 model.autocompleteState (languageMatches model.languageQuery)
 
                 newModel =
                     { model | autocompleteState = newState }
@@ -86,14 +86,14 @@ update msg model =
                 Nothing ->
                     if toTop then
                         { model
-                            | autocompleteState = Autocomplete.resetToLastItem updateConfig (languageMatches model.languageQuery allLanguages) 5 model.autocompleteState
-                            , selectedLanguage = List.head <| List.reverse <| List.take 5 <| (languageMatches model.languageQuery allLanguages)
+                            | autocompleteState = Autocomplete.resetToLastItem updateConfig (languageMatches model.languageQuery) 5 model.autocompleteState
+                            , selectedLanguage = List.head <| List.reverse <| languageMatches model.languageQuery
                         }
                             ! []
                     else
                         { model
-                            | autocompleteState = Autocomplete.resetToFirstItem updateConfig (languageMatches model.languageQuery allLanguages) 5 model.autocompleteState
-                            , selectedLanguage = List.head <| List.take 5 <| (languageMatches model.languageQuery allLanguages)
+                            | autocompleteState = Autocomplete.resetToFirstItem updateConfig (languageMatches model.languageQuery) 5 model.autocompleteState
+                            , selectedLanguage = List.head <| languageMatches model.languageQuery
                         }
                             ! []
 
@@ -106,7 +106,7 @@ update msg model =
         HandleEscape ->
             let
                 validOptions =
-                    not <| List.isEmpty (languageMatches model.languageQuery allLanguages)
+                    not <| List.isEmpty (languageMatches model.languageQuery)
 
                 handleEscape =
                     if validOptions then
@@ -171,13 +171,13 @@ resetInput model =
         |> resetLanguageMenu
 
 
-languageMatches : String -> List String -> List String
-languageMatches query languages =
+languageMatches : String -> List String
+languageMatches query =
     let
         lowerQuery =
             String.toLower query
     in
-        List.filter (String.contains lowerQuery << String.toLower) languages
+        List.filter (String.contains lowerQuery << String.toLower) allLanguages
 
 
 updateConfig : Autocomplete.UpdateConfig Message String
