@@ -195,7 +195,7 @@ viewMenu : Model -> Html Message
 viewMenu model =
     div
         [ style DefaultStyles.menuStyles ]
-        [ Html.map SetAutoState (Autocomplete.view viewConfig 5 model.autocompleteState (Update.acceptableLanguage model.languageQuery Update.allLanguages)) ]
+        [ Html.map SetAutoState (Autocomplete.view viewConfig 5 model.autocompleteState (Update.languageMatches model.languageQuery Update.allLanguages)) ]
 
 
 viewConfig : Autocomplete.ViewConfig String
@@ -229,10 +229,10 @@ mdlMenu mdlModel =
         , Menu.icon "arrow_drop_down"
         ]
         [ Menu.item
-            [ Menu.onSelect (SelectOrderBy Models.LastUpdated) ]
+            [ Menu.onSelect (SetOrderIssuesBy Models.LastUpdated) ]
             [ text "Last updated" ]
         , Menu.item
-            [ Menu.onSelect (SelectOrderBy Models.MostPopular) ]
+            [ Menu.onSelect (SetOrderIssuesBy Models.MostPopular) ]
             [ text "Most popular" ]
         ]
 

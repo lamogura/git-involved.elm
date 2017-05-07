@@ -13,7 +13,7 @@ type Message
     | GoToAboutPage
     | GoToMainPage
     | Mdl (Material.Msg Message)
-    | SelectOrderBy OrderIssuesBy
+    | SetOrderIssuesBy OrderIssuesBy
     | SetAutoState Autocomplete.Msg
     | SetQuery String
     | PreviewLanguage String

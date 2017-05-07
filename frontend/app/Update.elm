@@ -37,20 +37,20 @@ update msg model =
         Mdl msg_ ->
             Material.update Mdl msg_ model
 
-        SelectOrderBy orderBy ->
+        SetOrderIssuesBy orderBy ->
             { model | orderIssuesBy = orderBy } ! []
 
         SetQuery newQuery ->
             let
                 showMenu =
-                    not << List.isEmpty <| (acceptableLanguage newQuery allLanguages)
+                    not << List.isEmpty <| (languageMatches newQuery allLanguages)
             in
                 { model | languageQuery = newQuery, showLanguageMenu = showMenu, selectedLanguage = Nothing } ! []
 
         SetAutoState autoMsg ->
             let
                 ( newState, maybeMsg ) =
-                    Autocomplete.update updateConfig autoMsg 5 model.autocompleteState (acceptableLanguage model.languageQuery allLanguages)
+                    Autocomplete.update updateConfig autoMsg 5 model.autocompleteState (languageMatches model.languageQuery allLanguages)
 
                 newModel =
                     { model | autocompleteState = newState }
@@ -86,14 +86,14 @@ update msg model =
                 Nothing ->
                     if toTop then
                         { model
-                            | autocompleteState = Autocomplete.resetToLastItem updateConfig (acceptableLanguage model.languageQuery allLanguages) 5 model.autocompleteState
-                            , selectedLanguage = List.head <| List.reverse <| List.take 5 <| (acceptableLanguage model.languageQuery allLanguages)
+                            | autocompleteState = Autocomplete.resetToLastItem updateConfig (languageMatches model.languageQuery allLanguages) 5 model.autocompleteState
+                            , selectedLanguage = List.head <| List.reverse <| List.take 5 <| (languageMatches model.languageQuery allLanguages)
                         }
                             ! []
                     else
                         { model
-                            | autocompleteState = Autocomplete.resetToFirstItem updateConfig (acceptableLanguage model.languageQuery allLanguages) 5 model.autocompleteState
-                            , selectedLanguage = List.head <| List.take 5 <| (acceptableLanguage model.languageQuery allLanguages)
+                            | autocompleteState = Autocomplete.resetToFirstItem updateConfig (languageMatches model.languageQuery allLanguages) 5 model.autocompleteState
+                            , selectedLanguage = List.head <| List.take 5 <| (languageMatches model.languageQuery allLanguages)
                         }
                             ! []
 
@@ -101,12 +101,12 @@ update msg model =
             { model | autocompleteState = Autocomplete.reset updateConfig model.autocompleteState, selectedLanguage = Nothing } ! []
 
         PreviewLanguage id ->
-            { model | selectedLanguage = Just <| getLanguageAtId allLanguages id } ! []
+            { model | selectedLanguage = Just <| getLanguageAtId id } ! []
 
         HandleEscape ->
             let
                 validOptions =
-                    not <| List.isEmpty (acceptableLanguage model.languageQuery allLanguages)
+                    not <| List.isEmpty (languageMatches model.languageQuery allLanguages)
 
                 handleEscape =
                     if validOptions then
@@ -139,14 +139,14 @@ update msg model =
 setQuery : Model -> String -> Model
 setQuery model id =
     { model
-        | languageQuery = getLanguageAtId allLanguages id
-        , selectedLanguage = Just <| getLanguageAtId allLanguages id
+        | languageQuery = getLanguageAtId id
+        , selectedLanguage = Just <| getLanguageAtId id
     }
 
 
-getLanguageAtId : List String -> String -> String
-getLanguageAtId languages id =
-    List.filter (\language -> language == id) languages
+getLanguageAtId : String -> String
+getLanguageAtId id =
+    List.filter (\language -> language == id) allLanguages
         |> List.head
         |> Maybe.withDefault "Javascript"
 
@@ -171,8 +171,8 @@ resetInput model =
         |> resetMenu
 
 
-acceptableLanguage : String -> List String -> List String
-acceptableLanguage query languages =
+languageMatches : String -> List String -> List String
+languageMatches query languages =
     let
         lowerQuery =
             String.toLower query
