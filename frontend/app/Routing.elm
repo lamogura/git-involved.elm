@@ -1,8 +1,40 @@
-module Routing exposing (parseLocation)
+module Routing exposing (..)
 
 import Navigation exposing (Location)
 import UrlParser exposing (..)
-import Models exposing (Route(..))
+
+
+type Route
+    = MainPage
+    | AboutPage
+    | NotFoundRoute
+
+
+type alias Model =
+    Route
+
+
+type Message
+    = OnLocationChange Location
+    | GoToAboutPage
+    | GoToMainPage
+
+
+update : Message -> Model -> ( Model, Cmd Message )
+update msg model =
+    case msg of
+        OnLocationChange location ->
+            let
+                newRoute =
+                    parseLocation location
+            in
+                newRoute ! []
+
+        GoToAboutPage ->
+            ( model, Navigation.newUrl "#about" )
+
+        GoToMainPage ->
+            ( model, Navigation.newUrl "/" )
 
 
 matchers : Parser (Route -> a) a

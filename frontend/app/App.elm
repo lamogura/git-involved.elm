@@ -4,7 +4,7 @@ import Routing
 import Messages exposing (Message(..))
 import Navigation exposing (Location)
 import Routing
-import Models exposing (Model, initialModel, Issue)
+import Models exposing (Model, initialModel)
 import Update exposing (update)
 import Commands exposing (fetchIssues)
 import View exposing (view)
@@ -35,7 +35,7 @@ subscriptions model =
 
 main : Program Never Model Message
 main =
-    Navigation.program Messages.OnLocationChange
+    Navigation.program (\location -> Rtg (Routing.OnLocationChange location))
         { init = init
         , view = view
         , update = update

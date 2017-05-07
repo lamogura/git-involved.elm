@@ -5,12 +5,11 @@ import RemoteData exposing (WebData)
 import Navigation exposing (Location)
 import Material
 import AutocompleteLang
+import Routing
 
 
 type Message
-    = OnLocationChange Location
-    | GoToAboutPage
-    | GoToMainPage
+    = Rtg Routing.Message
     | OnFetchIssues (WebData IssueSearchResult)
     | Acl AutocompleteLang.Message
     | SetOrderIssuesBy OrderIssuesBy

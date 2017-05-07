@@ -11,6 +11,7 @@ import Commands exposing (repoNameFromUrl, dateFrom)
 import Material
 import Material.Menu as Menu
 import Material.Options as Options exposing (css, cs, when, styled)
+import Routing
 
 
 view : Model -> Html Message
@@ -22,13 +23,13 @@ view model =
 page : Model -> Html Message
 page model =
     case model.route of
-        Models.MainPage ->
+        Routing.MainPage ->
             mainPage model
 
-        Models.AboutPage ->
+        Routing.AboutPage ->
             aboutPage
 
-        Models.NotFoundRoute ->
+        Routing.NotFoundRoute ->
             notFoundView
 
 
@@ -158,7 +159,7 @@ aboutPage =
     div [ class "jumbotron" ]
         [ div [ class "container" ]
             [ h1 [] [ text "This is <about> page" ]
-            , button [ onClick Messages.GoToMainPage, class "btn btn-primary btn-lg" ] [ text "Go To Main Page" ]
+            , Html.map Rtg (button [ onClick Routing.GoToMainPage, class "btn btn-primary btn-lg" ] [ text "Go To Main Page" ])
             ]
         ]
 

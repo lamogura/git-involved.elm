@@ -3,12 +3,13 @@ module Models exposing (..)
 import AutocompleteLang
 import RemoteData exposing (WebData)
 import Material
+import Routing
 
 
 -- [ "Javascript", "Ruby", "Elm", "Java" ]
 
 
-initialModel : Route -> Model
+initialModel : Routing.Route -> Model
 initialModel route =
     { issuesSearchResult = RemoteData.Loading
     , route = route
@@ -20,7 +21,7 @@ initialModel route =
 
 type alias Model =
     { issuesSearchResult : WebData IssueSearchResult
-    , route : Route
+    , route : Routing.Model
     , autocompleteLang : AutocompleteLang.Model
     , orderIssuesBy : OrderIssuesBy
     , mdl : Material.Model
@@ -54,9 +55,3 @@ type alias Label =
 type OrderIssuesBy
     = LastUpdated
     | MostPopular
-
-
-type Route
-    = MainPage
-    | AboutPage
-    | NotFoundRoute
