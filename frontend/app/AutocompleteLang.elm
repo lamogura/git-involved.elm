@@ -4,7 +4,6 @@ import Html exposing (Html, button, div, h1, a, p, span, text)
 import Html.Attributes exposing (class, style, href, id)
 import Html.Events exposing (onClick)
 import Autocomplete
-import Autocomplete.DefaultStyles as DefaultStyles
 import Json.Decode as Json
 import Material
 import Material.Textfield as Textfield
@@ -296,8 +295,10 @@ view model =
 
 viewMenu : String -> Autocomplete.State -> Html Message
 viewMenu query autocompleteState =
-    div
-        [ style DefaultStyles.menuStyles ]
+    styled div
+        [ cs "border rounded bg-white"
+        , css "z-index" "11110"
+        ]
         [ Html.map SetAutocompleteState (Autocomplete.view viewConfig 5 autocompleteState (languageMatches query)) ]
 
 
@@ -307,9 +308,9 @@ viewConfig =
         customizedLi keySelected mouseSelected language =
             { attributes =
                 [ if keySelected || mouseSelected then
-                    style DefaultStyles.selectedItemStyles
+                    style selectedItemStyles
                   else
-                    style DefaultStyles.itemStyles
+                    style itemStyles
                 , id language
                 ]
             , children = [ Html.text (language) ]
@@ -317,6 +318,35 @@ viewConfig =
     in
         Autocomplete.viewConfig
             { toId = identity
-            , ul = [ style DefaultStyles.listStyles ]
+            , ul = [ style listStyles ]
             , li = customizedLi
             }
+
+
+selectedItemStyles : List ( String, String )
+selectedItemStyles =
+    [ ( "background", "#3366FF" )
+    , ( "color", "white" )
+    , ( "display", "block" )
+    , ( "padding", "5px 10px" )
+    , ( "border-bottom", "1px solid #DDD" )
+    , ( "cursor", "pointer" )
+    ]
+
+
+listStyles : List ( String, String )
+listStyles =
+    [ ( "list-style", "none" )
+    , ( "padding", "0" )
+    , ( "margin", "auto" )
+    , ( "overflow-y", "auto" )
+    ]
+
+
+itemStyles : List ( String, String )
+itemStyles =
+    [ ( "display", "block" )
+    , ( "padding", "5px 10px" )
+    , ( "border-bottom", "1px solid #DDD" )
+    , ( "cursor", "pointer" )
+    ]

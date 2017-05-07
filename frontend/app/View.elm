@@ -88,7 +88,7 @@ maybeIssueSearchResult model =
 issueDiv : Models.Issue -> Material.Model -> Html Message
 issueDiv issue mdl =
     styled div
-        [ cs "issue-card fit rounded flex my3 mdl-shadow--2dp mdl-color--white" ]
+        [ cs "issue-card fit rounded flex my3 mdl-shadow--2dp bg-white" ]
         [ div [ class "content col col-10" ]
             [ styled div
                 [ cs "py0 pl3 mdl-card__supporting-text"
