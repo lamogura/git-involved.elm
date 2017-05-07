@@ -60,7 +60,7 @@ mainPage model =
                     , styled div
                         [ cs "mt3 ml2 flex" ]
                         [ text ("Order by:")
-                        , text (toString model.orderBy)
+                        , text (toString model.orderIssuesBy)
                         , mdlMenu model.mdl
                         ]
                     ]
@@ -160,7 +160,7 @@ autoComplete model =
                     Json.fail reason
 
         menu =
-            if model.showMenu then
+            if model.showLanguageMenu then
                 [ viewMenu model ]
             else
                 []
@@ -171,7 +171,7 @@ autoComplete model =
                     language
 
                 Nothing ->
-                    model.query
+                    model.languageQuery
     in
         div []
             (List.append
@@ -195,7 +195,7 @@ viewMenu : Model -> Html Message
 viewMenu model =
     div
         [ style DefaultStyles.menuStyles ]
-        [ Html.map SetAutoState (Autocomplete.view viewConfig 5 model.autoState (Update.acceptableLanguage model.query model.languages)) ]
+        [ Html.map SetAutoState (Autocomplete.view viewConfig 5 model.autocompleteState (Update.acceptableLanguage model.languageQuery Update.allLanguages)) ]
 
 
 viewConfig : Autocomplete.ViewConfig String

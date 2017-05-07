@@ -14,7 +14,7 @@ initialModel route =
     , route = route
     , autocompleteState = Autocomplete.empty
     , selectedLanguage = Just "Javascript"
-    , showingLanguageMenu = False
+    , showLanguageMenu = False
     , languageQuery = "Javascript"
     , orderIssuesBy = LastUpdated
     , mdl = Material.model
@@ -26,7 +26,7 @@ type alias Model =
     , route : Route
     , autocompleteState : Autocomplete.State
     , selectedLanguage : Maybe String
-    , showingLanguageMenu : Bool
+    , showLanguageMenu : Bool
     , languageQuery : String
     , orderIssuesBy : OrderIssuesBy
     , mdl : Material.Model

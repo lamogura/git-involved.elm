@@ -10,6 +10,11 @@ import Dom
 import Task
 
 
+allLanguages : List String
+allLanguages =
+    [ "Javascript", "Ruby", "Elm", "Java" ]
+
+
 update : Message -> Model -> ( Model, Cmd Message )
 update msg model =
     case msg of
@@ -33,22 +38,22 @@ update msg model =
             Material.update Mdl msg_ model
 
         SelectOrderBy orderBy ->
-            { model | orderBy = orderBy } ! []
+            { model | orderIssuesBy = orderBy } ! []
 
         SetQuery newQuery ->
             let
                 showMenu =
-                    not << List.isEmpty <| (acceptableLanguage newQuery model.languages)
+                    not << List.isEmpty <| (acceptableLanguage newQuery allLanguages)
             in
-                { model | query = newQuery, showMenu = showMenu, selectedLanguage = Nothing } ! []
+                { model | languageQuery = newQuery, showLanguageMenu = showMenu, selectedLanguage = Nothing } ! []
 
         SetAutoState autoMsg ->
             let
                 ( newState, maybeMsg ) =
-                    Autocomplete.update updateConfig autoMsg 5 model.autoState (acceptableLanguage model.query model.languages)
+                    Autocomplete.update updateConfig autoMsg 5 model.autocompleteState (acceptableLanguage model.languageQuery allLanguages)
 
                 newModel =
-                    { model | autoState = newState }
+                    { model | autocompleteState = newState }
             in
                 case maybeMsg of
                     Nothing ->
@@ -81,27 +86,27 @@ update msg model =
                 Nothing ->
                     if toTop then
                         { model
-                            | autoState = Autocomplete.resetToLastItem updateConfig (acceptableLanguage model.query model.languages) 5 model.autoState
-                            , selectedLanguage = List.head <| List.reverse <| List.take 5 <| (acceptableLanguage model.query model.languages)
+                            | autocompleteState = Autocomplete.resetToLastItem updateConfig (acceptableLanguage model.languageQuery allLanguages) 5 model.autocompleteState
+                            , selectedLanguage = List.head <| List.reverse <| List.take 5 <| (acceptableLanguage model.languageQuery allLanguages)
                         }
                             ! []
                     else
                         { model
-                            | autoState = Autocomplete.resetToFirstItem updateConfig (acceptableLanguage model.query model.languages) 5 model.autoState
-                            , selectedLanguage = List.head <| List.take 5 <| (acceptableLanguage model.query model.languages)
+                            | autocompleteState = Autocomplete.resetToFirstItem updateConfig (acceptableLanguage model.languageQuery allLanguages) 5 model.autocompleteState
+                            , selectedLanguage = List.head <| List.take 5 <| (acceptableLanguage model.languageQuery allLanguages)
                         }
                             ! []
 
         Reset ->
-            { model | autoState = Autocomplete.reset updateConfig model.autoState, selectedLanguage = Nothing } ! []
+            { model | autocompleteState = Autocomplete.reset updateConfig model.autocompleteState, selectedLanguage = Nothing } ! []
 
         PreviewLanguage id ->
-            { model | selectedLanguage = Just <| getLanguageAtId model.languages id } ! []
+            { model | selectedLanguage = Just <| getLanguageAtId allLanguages id } ! []
 
         HandleEscape ->
             let
                 validOptions =
-                    not <| List.isEmpty (acceptableLanguage model.query model.languages)
+                    not <| List.isEmpty (acceptableLanguage model.languageQuery allLanguages)
 
                 handleEscape =
                     if validOptions then
@@ -109,14 +114,14 @@ update msg model =
                             |> removeSelection
                             |> resetMenu
                     else
-                        { model | query = "" }
+                        { model | languageQuery = "" }
                             |> removeSelection
                             |> resetMenu
 
                 escapedModel =
                     case model.selectedLanguage of
                         Just language ->
-                            if model.query == language then
+                            if model.languageQuery == language then
                                 model
                                     |> resetInput
                             else
@@ -134,8 +139,8 @@ update msg model =
 setQuery : Model -> String -> Model
 setQuery model id =
     { model
-        | query = getLanguageAtId model.languages id
-        , selectedLanguage = Just <| getLanguageAtId model.languages id
+        | languageQuery = getLanguageAtId allLanguages id
+        , selectedLanguage = Just <| getLanguageAtId allLanguages id
     }
 
 
@@ -154,14 +159,14 @@ removeSelection model =
 resetMenu : Model -> Model
 resetMenu model =
     { model
-        | autoState = Autocomplete.empty
-        , showMenu = False
+        | autocompleteState = Autocomplete.empty
+        , showLanguageMenu = False
     }
 
 
 resetInput : Model -> Model
 resetInput model =
-    { model | query = "" }
+    { model | languageQuery = "" }
         |> removeSelection
         |> resetMenu
 

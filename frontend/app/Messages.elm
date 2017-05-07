@@ -1,6 +1,6 @@
 module Messages exposing (Message(..))
 
-import Models exposing (IssueSearchResult, OrderBy)
+import Models exposing (IssueSearchResult, OrderIssuesBy)
 import RemoteData exposing (WebData)
 import Navigation exposing (Location)
 import Material
@@ -13,7 +13,7 @@ type Message
     | GoToAboutPage
     | GoToMainPage
     | Mdl (Material.Msg Message)
-    | SelectOrderBy OrderBy
+    | SelectOrderBy OrderIssuesBy
     | SetAutoState Autocomplete.Msg
     | SetQuery String
     | PreviewLanguage String
