@@ -5,7 +5,7 @@ import Html.Attributes exposing (class, style, href, id)
 import Html.Events exposing (onClick)
 import Models exposing (Model)
 import Messages exposing (Message(..))
-import Autocomplete.View exposing (autoComplete)
+import AutocompleteLang
 import RemoteData exposing (WebData)
 import Commands exposing (repoNameFromUrl, dateFrom)
 import Material
@@ -52,14 +52,8 @@ mainPage model =
                 [ cs "p2 mx-auto max-width-4" ]
                 [ styled div
                     [ cs "flex flex-wrap justify-center" ]
-                    [ (autoComplete
-                        { languageQuery = model.languageQuery
-                        , autocompleteState = model.autocompleteState
-                        , selectedLanguage = model.selectedLanguage
-                        , showingLanguageMenu = model.showingLanguageMenu
-                        , mdl = model.mdl
-                        }
-                      )
+                    [ Html.map Acl
+                        (AutocompleteLang.view model.autocompleteLang)
                     , styled div
                         [ cs "mt3 ml2 flex" ]
                         [ text ("Order by:")

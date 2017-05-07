@@ -8,7 +8,7 @@ import Models exposing (Model, initialModel, Issue)
 import Update exposing (update)
 import Commands exposing (fetchIssues)
 import View exposing (view)
-import Autocomplete
+import AutocompleteLang
 
 
 init : Location -> ( Model, Cmd Message )
@@ -26,7 +26,7 @@ init location =
 
 subscriptions : Model -> Sub Message
 subscriptions model =
-    Sub.map SetAutocompleteState Autocomplete.subscription
+    Sub.map Acl (AutocompleteLang.subscriptions model.autocompleteLang)
 
 
 

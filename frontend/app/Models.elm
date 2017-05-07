@@ -1,6 +1,6 @@
 module Models exposing (..)
 
-import Autocomplete
+import AutocompleteLang
 import RemoteData exposing (WebData)
 import Material
 
@@ -12,10 +12,7 @@ initialModel : Route -> Model
 initialModel route =
     { issuesSearchResult = RemoteData.Loading
     , route = route
-    , autocompleteState = Autocomplete.empty
-    , selectedLanguage = Just "Javascript"
-    , showingLanguageMenu = False
-    , languageQuery = "Javascript"
+    , autocompleteLang = AutocompleteLang.init
     , orderIssuesBy = LastUpdated
     , mdl = Material.model
     }
@@ -24,10 +21,7 @@ initialModel route =
 type alias Model =
     { issuesSearchResult : WebData IssueSearchResult
     , route : Route
-    , autocompleteState : Autocomplete.State
-    , selectedLanguage : Maybe String
-    , showingLanguageMenu : Bool
-    , languageQuery : String
+    , autocompleteLang : AutocompleteLang.Model
     , orderIssuesBy : OrderIssuesBy
     , mdl : Material.Model
     }
