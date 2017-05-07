@@ -32,7 +32,7 @@ update msg model =
             ( model, Navigation.newUrl "/" )
 
         OnFetchIssues response ->
-            ( { model | issuesSearchResult = response }, Cmd.none )
+            { model | issuesSearchResult = response } ! []
 
         Mdl msg_ ->
             Material.update Mdl msg_ model
@@ -66,7 +66,7 @@ update msg model =
             let
                 newModel =
                     setQuery model id
-                        |> resetMenu
+                        |> resetLanguageMenu
             in
                 newModel ! []
 
@@ -74,7 +74,7 @@ update msg model =
             let
                 newModel =
                     setQuery model id
-                        |> resetMenu
+                        |> resetLanguageMenu
             in
                 ( newModel, Task.attempt (\_ -> NoOp) (Dom.focus "autocomplete-input") )
 
@@ -111,12 +111,12 @@ update msg model =
                 handleEscape =
                     if validOptions then
                         model
-                            |> removeSelection
-                            |> resetMenu
+                            |> removeSelectedLanguage
+                            |> resetLanguageMenu
                     else
                         { model | languageQuery = "" }
-                            |> removeSelection
-                            |> resetMenu
+                            |> removeSelectedLanguage
+                            |> resetLanguageMenu
 
                 escapedModel =
                     case model.selectedLanguage of
@@ -151,13 +151,13 @@ getLanguageAtId id =
         |> Maybe.withDefault "Javascript"
 
 
-removeSelection : Model -> Model
-removeSelection model =
+removeSelectedLanguage : Model -> Model
+removeSelectedLanguage model =
     { model | selectedLanguage = Nothing }
 
 
-resetMenu : Model -> Model
-resetMenu model =
+resetLanguageMenu : Model -> Model
+resetLanguageMenu model =
     { model
         | autocompleteState = Autocomplete.empty
         , showLanguageMenu = False
@@ -167,8 +167,8 @@ resetMenu model =
 resetInput : Model -> Model
 resetInput model =
     { model | languageQuery = "" }
-        |> removeSelection
-        |> resetMenu
+        |> removeSelectedLanguage
+        |> resetLanguageMenu
 
 
 languageMatches : String -> List String -> List String
