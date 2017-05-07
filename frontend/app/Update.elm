@@ -11,11 +11,6 @@ import Dom
 import Task
 
 
-allLanguages : List String
-allLanguages =
-    [ "Javascript", "Ruby", "Elm", "Java" ]
-
-
 update : Message -> Model -> ( Model, Cmd Message )
 update msg model =
     case msg of
@@ -203,3 +198,37 @@ updateConfig =
         , onMouseClick = \id -> Just <| SelectLanguageMouse id
         , separateSelections = False
         }
+
+
+allLanguages : List String
+allLanguages =
+    [ "Javascript"
+    , "swift"
+    , "Java"
+    , "go"
+    , "TypeScript"
+    , "rust"
+    , "coffeescript"
+    , "ruby"
+    , "php"
+    , "elixir"
+    , "roslyn"
+    , "PowerShell"
+    , "clojure"
+    , "erlang"
+    , "julia"
+    , "scala"
+    , "crystal"
+    , "python"
+    , "Elm"
+    , "Nim"
+    , "purescript"
+    , "ChezScheme"
+    , "frege"
+    , "ponyc"
+    , "nu"
+    , "racket"
+    , "groovy"
+    , "LiveScript"
+    , "haxe"
+    ]
