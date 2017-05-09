@@ -15,11 +15,11 @@
   "scripts": {
     "test": "./node_modules/.bin/elm-test tests/RunTestsInTerminal.elm",
     "start": "node server.js",
-    "client": "$(npm bin)/webpack-dev-server --hot --inline",
-    "server": "$(npm bin)/nodemon server.js",
-    "dev": "$(npm bin)/nf start",
-    "build": "$(npm bin)/webpack --progress --display-modules",
-    "postinstall": "$(npm bin)/elm-package install -y && yarn build"
+    "client": "webpack-dev-server --hot --inline",
+    "server": "nodemon server.js",
+    "dev": "nf start",
+    "build": "webpack --progress --display-modules",
+    "postinstall": "\"$(yarn bin)/elm-package\" install -y && yarn build"
   },
   "dependencies": {
     "autoprefixer": "^6.3.6",
