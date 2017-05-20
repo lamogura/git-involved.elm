@@ -16,17 +16,12 @@ fetchIssues language =
             Maybe.withDefault "Javascript" language
                 |> String.toLower
 
-        bodyPayload =
-            """{ "route": "search/issues", "params": "q=language:"""
-                ++ queryLanguage
-                ++ """+is:open&sort=updated" } """
-
         request =
             Http.request
-                { method = "POST"
-                , headers = [ Http.header "xlegit" "supersaiyan" ]
-                , url = "/api"
-                , body = Http.stringBody "application/json" bodyPayload
+                { method = "GET"
+                , headers = []
+                , url = "https://api.github.com/search/issues?q=language:" ++ queryLanguage ++ "+is:open&sort=updated"
+                , body = Http.stringBody "application/json" "{}"
                 , expect = Http.expectJson issueSearchResultDecoder
                 , timeout = Nothing
                 , withCredentials = False
