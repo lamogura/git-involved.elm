@@ -3,7 +3,6 @@ module App exposing (..)
 import Routing
 import Messages exposing (Message(..))
 import Navigation exposing (Location)
-import Routing
 import Models exposing (Model, initialModel, Issue)
 import Update exposing (update)
 import View exposing (view)
