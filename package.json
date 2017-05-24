@@ -16,8 +16,8 @@
     "test": "./node_modules/.bin/elm-test tests/RunTestsInTerminal.elm",
     "start": "node server.js",
     "server": "nodemon server.js",
-    "client": "elm-live --output=static/elm.js app/App.elm",
-    "dev": "elm-live --output=static/elm.js app/App.elm --pushstate --open --debug"
+    "client": "elm-live --output=static/elm.js app/App.elm --pushstate --open --debug",
+    "dev": "nf start"
   },
   "dependencies": {
     "babel-cli": "^6.24.1",
@@ -35,6 +35,7 @@
     "cors": "^2.8.3",
     "dotenv-safe": "^4.0.3",
     "express": "^4.15.2",
+    "foreman": "^2.0.0",
     "namespaced-console-logger": "^1.0.1",
     "request": "^2.81.0",
     "request-promise": "^4.2.0",
