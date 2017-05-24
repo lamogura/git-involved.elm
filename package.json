@@ -15,7 +15,9 @@
   "scripts": {
     "test": "./node_modules/.bin/elm-test tests/RunTestsInTerminal.elm",
     "start": "node server.js",
-    "server": "nodemon server.js"
+    "server": "nodemon server.js",
+    "client": "elm-live --output=static/elm.js app/App.elm",
+    "dev": "elm-live --output=static/elm.js app/App.elm --pushstate --open --debug"
   },
   "dependencies": {
     "babel-cli": "^6.24.1",
@@ -29,6 +31,7 @@
     "babel-preset-stage-2": "^6.24.1",
     "babel-register": "^6.24.1",
     "body-parser": "^1.17.1",
+    "compression": "^1.6.2",
     "cors": "^2.8.3",
     "dotenv-safe": "^4.0.3",
     "express": "^4.15.2",
