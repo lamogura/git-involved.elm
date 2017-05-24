@@ -16,7 +16,7 @@
     "test": "./node_modules/.bin/elm-test tests/RunTestsInTerminal.elm",
     "start": "node server.js",
     "server": "nodemon server.js",
-    "postinstall": "elm make app/App.elm --output=static/elm.js",
+    "build": "elm make app/App.elm --output=static/elm.js",
     "client": "elm-live --output=static/elm.js app/App.elm --pushstate --open --debug --dir=static"
   },
   "dependencies": {
