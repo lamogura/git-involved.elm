@@ -29,10 +29,7 @@ app.use(bodyParser.json())
 
 app.use(compression()) // Enable gzip
 
-// Render files
-app.get('*', function(req, res) {
-  res.sendFile(path.resolve(__dirname, '../static', 'index.html'))
-})
+app.use("/", express.static(path.resolve(__dirname, '../static')))
 
 const server = app.listen(process.env.PORT || 5000, () => {
   console.log(
