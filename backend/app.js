@@ -29,16 +29,7 @@ app.use(bodyParser.json())
 
 app.use(compression()) // Enable gzip
 
-app.use(favicon(path.resolve(__dirname, '../dist', 'favicon.ico')))
-app.use(express.static(path.resolve(__dirname, '../dist')))
-
-// API routes
-app.use('/api', ensureLegitRequestSource, routes)
-
-// Render files
-app.get('*', function(req, res) {
-  res.render('index')
-})
+app.use("/", express.static(path.resolve(__dirname, '../static')))
 
 const server = app.listen(process.env.PORT || 5000, () => {
   console.log(

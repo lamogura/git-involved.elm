@@ -5,3 +5,6 @@ This is based on one premise
 
 # What
 This shows the most recent github issues for open source projects of a given language
+
+# How to start
+`elm-live --output=elm.js app/App.elm --pushstate --open --debug`
