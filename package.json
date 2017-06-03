@@ -21,6 +21,7 @@
     "client": "elm-live --output=frontend/elm.js app/App.elm --pushstate --open --debug --dir=frontend"
   },
   "dependencies": {
+    "apicache": "^0.8.6",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
     "babel-plugin-add-module-exports": "^0.2.1",

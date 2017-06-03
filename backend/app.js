@@ -7,6 +7,7 @@ import compression from 'compression'
 import routes from './routes'
 import config from './config'
 import loggers from './loggers'
+import apicache from 'apicache'
 
 const LEGIT_APP_SECRET = config.get('LEGIT_APP_SECRET')
 
@@ -21,6 +22,9 @@ const ensureLegitRequestSource = (req, res, next) => {
 }
 
 const app = express()
+
+let cache = apicache.middleware
+app.use(cache('1 hour'))
 
 app.use(cors())
 
