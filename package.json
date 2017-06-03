@@ -17,7 +17,8 @@
     "start": "node server.js",
     "server": "nodemon server.js",
     "build": "elm make app/App.elm --output=static/elm.js && uglifyjs static/elm.js --compress --mangle --output static/elm.js",
-    "client": "elm-live --output=static/elm.js app/App.elm --pushstate --open --debug --dir=static"
+    "postbuild": "html-minifier frontend/index.html --config-file html-minifier.conf --output static/index.html",
+    "client": "elm-live --output=frontend/elm.js app/App.elm --pushstate --open --debug --dir=frontend"
   },
   "dependencies": {
     "babel-cli": "^6.24.1",
@@ -41,6 +42,7 @@
     "serve-favicon": "^2.4.2"
   },
   "devDependencies": {
+    "html-minifier": "^3.5.2",
     "nodemon": "^1.11.0",
     "uglify-js": "^3.0.15"
   }
