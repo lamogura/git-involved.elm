@@ -24,7 +24,7 @@ const ensureLegitRequestSource = (req, res, next) => {
 const app = express()
 
 let cache = apicache.middleware
-app.use(cache('1 hour'))
+app.use(cache('1 week'))
 
 app.use(cors())
 
