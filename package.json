@@ -16,8 +16,7 @@
     "test": "./node_modules/.bin/elm-test tests/RunTestsInTerminal.elm",
     "start": "node server.js",
     "server": "nodemon server.js",
-    "build": "elm make app/App.elm --output=frontend/elm.js && uglifyjs static/elm.js --compress --mangle --output static/elm.js",
-    "postbuild": "html-minifier frontend/index.html --config-file html-minifier.conf --output static/index.html",
+    "build": "elm make app/App.elm --output=frontend/elm.js && grunt",
     "dev": "elm-live --output=frontend/elm.js app/App.elm --pushstate --open --debug --dir=frontend"
   },
   "dependencies": {

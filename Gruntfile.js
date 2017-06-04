@@ -6,7 +6,7 @@ module.exports = function(grunt) {
         src: ['public/']
       },
       finishBuild: {
-        src: ['public/elm.js']
+        src: ['public/elm.js', 'styles']
       }
     },
     //copy
