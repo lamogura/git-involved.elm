@@ -16,9 +16,9 @@
     "test": "./node_modules/.bin/elm-test tests/RunTestsInTerminal.elm",
     "start": "node server.js",
     "server": "nodemon server.js",
-    "build": "elm make app/App.elm --output=static/elm.js && uglifyjs static/elm.js --compress --mangle --output static/elm.js",
+    "build": "elm make app/App.elm --output=frontend/elm.js && uglifyjs static/elm.js --compress --mangle --output static/elm.js",
     "postbuild": "html-minifier frontend/index.html --config-file html-minifier.conf --output static/index.html",
-    "client": "elm-live --output=frontend/elm.js app/App.elm --pushstate --open --debug --dir=frontend"
+    "dev": "elm-live --output=frontend/elm.js app/App.elm --pushstate --open --debug --dir=frontend"
   },
   "dependencies": {
     "apicache": "^0.8.6",
@@ -43,6 +43,20 @@
     "serve-favicon": "^2.4.2"
   },
   "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-clean": "^1.1.0",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-cssmin": "^2.2.0",
+    "grunt-contrib-htmlmin": "^2.4.0",
+    "grunt-contrib-imagemin": "^1.0.1",
+    "grunt-contrib-uglify": "^3.0.1",
+    "grunt-critical": "^0.2.2",
+    "grunt-criticalcss": "^2.1.0",
+    "grunt-processhtml": "^0.4.1",
+    "grunt-purifycss": "^0.1.2",
+    "grunt-uncss": "^0.6.1",
+    "grunt-uncss-inline": "^1.0.5",
     "html-minifier": "^3.5.2",
     "nodemon": "^1.11.0",
     "uglify-js": "^3.0.15"

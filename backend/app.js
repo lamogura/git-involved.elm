@@ -33,7 +33,7 @@ app.use(bodyParser.json())
 
 app.use(compression()) // Enable gzip
 
-app.use("/", express.static(path.resolve(__dirname, '../static')))
+app.use("/", express.static(path.resolve(__dirname, '../public')))
 
 const server = app.listen(process.env.PORT || 5000, () => {
   console.log(

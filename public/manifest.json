@@ -1,0 +1,26 @@
+{
+  "short_name": "GitBack",
+  "name": "GitBack Contribute to OSS",
+  "icons": [
+    {
+      "src": "img/launcher_icon.png",
+      "type": "image/png",
+      "sizes": "48x48"
+    },
+    {
+      "src": "img/launcher_icon_2x.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "img/launcher_icon_3x.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ],
+  "start_url": "/?launcher=true",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#3F51B5",
+  "background_color": "#3F51B5"
+}
